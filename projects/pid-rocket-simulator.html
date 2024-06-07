@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+    <meta name="description" content="Explore the codebase of this project, which utilizes a PID controller for the control systems of a rocket." />
+    <meta name="keywords" content="Marius Naasen, AI, PID controller, rocket, game development, C#, Unity" />
+    <meta name="author" content="Marius Naasen" />
+    <title>PID Controller for 3D Rocket Simulation - Marius Naasen</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-csharp.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../assets/img/background/portrait.jpg" alt="Profile picture of Marius Naasen">
+                Marius Naasen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="header-mystory-container" style="background-color: white;">
+        <header class="masthead" style="background-image: url('../assets/img/projects/rocket_ai.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading text-center">
+                            <img src="../assets/img/background/portrait.jpg" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
+                            <span class="subheading invisible-text">Hi, I am Marius</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>PID Controller for 3D Rocket Simulation</h1>
+                        <p>Welcome to my rocket simulation project. This project aims to show how rockets can stay stable and land precisely using a PID (Proportional-Integral-Derivative) controller within a simulated 3D environment. The entire simulation is built in the Unity game engine.</p>
+                        <p>As hinted by the the image banner of this page, the inspiration of this project comes from the simultaneous landing of SpaceX's dual side boosters in 2018. The precision of their synchronized touchdown was awe-inspiring and sparked my interest in looking into rocket control systems. This project is my attempt to replicate that level of precision in a simulated environment.</p>
+                        <h2>Project Overview</h2>
+                        <p>This project involves controlling a rocket in a 3D simulation using a PID controller. The controller manages the rocket's stability, rotation, and movement towards a target location. For this project we have two key features:</p>
+                        <ul>
+                            <li><strong>Smooth Maneuverability:</strong> The rocket adjusts itself based on the target, making smooth movements to minimize oscillations.</li>
+                            <li><strong>Controlled Descents:</strong> The rocket is able to transition from high altitude to ground level, performing maneuvers like pre-burns and ‘suicide burn’ landings.</li>
+                        </ul>
+                        <p>In this article, we aim to provide an overview of the project, starting with explanations of the assumptions made to simplify the simulation. Furthermore, we will offer insights into the development process, from initial concepts to final iterations, and discuss the challenges faced and lessons learned. Visual demonstrations are also provided.</p>
+                        <h2>Assumptions</h2>
+                        <p>To simplify some of the complexities of the rocket's movement, we have certain restrictions and assumptions:</p>
+                        <ul>
+                            <li>The rocket does not have built-in sensors monitoring its orientation; instead, it has access to the position and rotation data provided by the Unity engine.</li>
+                            <li>The rotation around the \(y\)-axis is locked. This avoids the complexities of rotating around the \(x\)- or \(z\)-axis when the y rotation is non-zero.</li>
+                            <li>Instead of using thrusters for rotation, the rocket directly modifies the rotation parameter of the game object in Unity. As a result, rotation is not handled by the physics engine.</li>
+                            <li>The rocket's rotations around the \(x\)- and \(z\)-axes are limited to some extent to prevent the rocket from flipping upside down.</li>
+                        </ul>
+                        <h2>Initial Idea Using Physics Formulas</h2>
+                        <p>When starting this project, I wanted to replicate the controlled maneuvers seen in real rockets, like SpaceX's Falcon 9. With no experience with PID controllers (I hadn’t even heard of them before), my initial approach was to use physics formulas from my high school physics classes to calculate the necessary speed and timing for the rocket to reach the target location with exact precision. The following is a breakdown of the components of the rocket implementing physics formulas found in the <code>AiController.cs</code> script.</p>
+                        <p><strong>FixedUpdate Method:</strong> We continuously check whether the motor should be active or not to maintain smooth movement.</p>
+                        <pre><code class="language-csharp">
+private void FixedUpdate() {
+    if (!ShouldCutOff()) {
+        myMovement.UseMotor();
+        usedMotor = true;
+    } else {
+        usedMotor = false;
+    }
+}
+                        </code></pre>
+                        <p><strong>ShouldCutOff Method:</strong>This method calculates current speed and distance to target, determining whether to cut off the motor.</p>
+                        <pre><code class="language-csharp">
+private bool ShouldCutOff() {
+    currentSpeed = CalculateCurrentSpeed();
+    distanceLeft = myMovement.target.position.y - this.transform.position.y;
+
+    if (distanceLeft < 0) {
+        // Target is below
+    } else {
+        // Target is above
+        timeUntilTop = CalculateTimeUntilTop();
+    }
+
+    return distanceLeft < someThreshold; // someThreshold defined elsewhere
+}
+                        </code></pre>
+                        <p><strong>CalculateCurrentSpeed Method:</strong>Calculates the current speed, adjusting for whether the motor is on or off.</p>
+                        <pre><code class="language-csharp">
+private float CalculateCurrentSpeed() {
+    if (usedMotor) {
+        return Mathf.Sqrt(2 * (myAcceleration - 1) * 9.81f * this.transform.position.y);
+    } else {
+        return Mathf.Sqrt(2 * (myAcceleration - 1) * 9.81f * this.transform.position.y) / 9.81f;
+    }
+}
+                        </code></pre>
+                        <p><strong>CalculateTimeUntilTop Method:</strong>Determines the time needed to reach the highest point based on current acceleration.</p>
+                        <pre><code class="language-csharp">
+private float CalculateTimeUntilTop() {
+    return Mathf.Sqrt(2 * (myAcceleration - 1) * 9.81f * this.transform.position.y) / 9.81f;
+}
+                        </code></pre>
+                        <p><strong>Physics Formulas:</strong> The physics formulas used are broken down into the following:</p>
+                        <ol>
+                            <li><strong>Speed with Motor:</strong><br>
+                            <code class="language-csharp">currentSpeed = sqrt(2 * (myAcceleration - 1) * 9.81 * currentHeight)</code></li>
+                            <li><strong>Speed without Motor:</strong><br>
+                            <code class="language-csharp">currentSpeed = sqrt(2 * (myAcceleration - 1) * 9.81 * currentHeight) / 9.81</code></li>
+                            <li><strong>Time to Reach Top:</strong><br>
+                            <code class="language-csharp">timeUntilTop = sqrt(2 * (myAcceleration - 1) * 9.81 * currentHeight) / 9.81</code></li>
+                        </ol>
+                        <p>These formulas ensure the rocket knows its current speed and the time until it reaches the target locatino. By combining this information, the rocket is able to perfectly stop at its desired location.</p>
+                        <h2>Evolution from Elevator to Rocket</h2>
+                        <p>In an effort to solve the limitations presented in the rocket implementing physics formulas, I found out about PID controllers. Initially, I started with a simpler prototype: an elevator. This elevator was designed to go up and down using PID control principles to match the altitude of a target object. All rotations and movements was locked, except for in the \(y\) direction.</p>
+                        <ul>
+                            <li><strong>Elevator Prototype:</strong> The elevator moved to a target height using a PID controller, helping me understand the basics of PID control in a controlled environment.</li>
+                            <li><strong>Lessons Learned:</strong> This prototype taught me how to tune PID parameters and handle edge cases like oscillations.</li>
+                            <li><strong>Transition to Rocket:</strong> With the insights gained from the elevator prototype, I moved on to the more complex rocket simulation, tackling additional challenges like rotational stability and 3D movement.</li>
+                        </ul>
+                        <h2>Prototypes and Iterations</h2>
+                        <p>The following is a list of iterations of the rocket.</p>
+                        <ul>
+                            <li><strong>Prototype 1: Physics-Based Control:</strong> This initial approach used physics formulas but proved itself too simplistic for dynamic changes.</li>
+                            <li><strong>Prototype 2: Elevator with PID Controller:</strong> The elevator used a PID controller to reach a target altitude, which was crucial for understanding PID control.</li>
+                            <li><strong>Prototype 3: Basic Rocket:</strong> The first rocket prototype had basic control but was very unstable.</li>
+                            <li><strong>Prototype 4: Improved Rocket:</strong> Stability was improved by fine-tuning the PID parameters.</li>
+                            <li><strong>Prototype 5: Advanced Rocket:</strong> Added features like descent maneuvers and smooth landings.</li>
+                        </ul>
+                        <h2>Pre-Ignite Phase for Descent</h2>
+                        <p>The pre-ignite phase enhances the rocket system to enable more sophisticated landings. Without this addition, if the rocket needed to move to a lower altitude, it would simply turn off its engines and drop down. By incorporating the <code>AdjustFallingPath.cs</code> script, the rocket gains momentum and adjusts its descent path and velocity, allowing it to drift in the \(xz\)-plane for more efficiency.</p>
+                        <p>The script is designed to fine-tune the rocket's descent by managing its position and speed as it approaches the landing target.</p>
+                        <ul>
+                            <li><strong>Update Loop:</strong> Continuously checks the rocket's distance to the target. If the rocket is significantly above the target, it triggers the descent phase.</li>
+                            <li><strong>Descent Adjustment:</strong> Once in the descent phase initiaed by the update loop, it starts a timer and calculates the necessary adjustments to the rocket's position and speed for a smooth and controlled landing.</li>
+                        </ul>
+                        <p>Here's a snippet from the script to give an idea of how it works:</p>
+                        <pre><code class="language-csharp">
+void Update() {
+    if (target.position.y - transform.position.y < -100) {
+        decreaseHeight = true;
+    }
+}
+
+void FixPosOnWayDown() {
+    if (!decreaseHeight || startTimer) return;
+    startTimer = true;
+    timer = Time.timeSinceLevelLoad + timeAdd;
+    Vector3 distanceInXZ = target.position - transform.position;
+    distanceInXZ.y = 0;
+    float lengthXZ = distanceInXZ.magnitude;
+}
+                        </code></pre>
+                        <h2>Rotation Control for \(x\) and \(z\) Axes</h2>
+                        <p>Controlling the rocket's rotation along the \(x\) and \(z\) axes is crucial for maintaining stability during maneuvers. for instance, the <code>RotationPID02</code> and <code>RotationMotor02</code> scripts handle the \(x\) rotation.</p>
+                        <h3><code>RotationPID02</code> Script</h3>
+                        <p>This script calculates the necessary rotational adjustments to keep the rocket stable.</p>
+                        <pre><code class="language-csharp">
+public void PidCalculation(Vector3 target, Vector3 currentValue, float currentVelocity)
+{
+    Vector3 error = target - currentValue;
+    float fError = error.z;
+
+    float constant = 0;
+    float errorHeight = error.y;
+
+    if (newTargetPos)
+    {
+        imaginaryPosZ = target.z / 4;
+        imaginaryPosZ = target.z - (target.z - currentValue.z) * sailingValue;
+        imaginaryPosZToRight = target.z + (currentValue.z - target.z) * sailingValue;
+        newTargetPos = false;
+    }
+
+    if (currentValue.z > target.z)
+    {
+        targetIsToRight = false;
+    }
+    if (currentValue.z < target.z)
+    {
+        targetIsToRight = true;
+    }
+
+    integral += fError * Time.fixedDeltaTime;
+    float errorSlope = (fError - oldError) / Time.fixedDeltaTime;
+
+    output = (integral * Ki) + (errorSlope * Kd * constant) + (fError * Kp);
+
+    if (isClamp)
+    {
+        output = Mathf.Clamp(output, min, max);
+    }
+
+    oldError = fError;
+}
+                        </code></pre>
+                        <h3><code>RotationMotor02</code> Script</h3>
+                        <p>This script applies the calculated rotational adjustments to the rocket.</p>
+                        <pre><code class="language-csharp">
+public void ApplyRotation(float sideThrust)
+{
+    localDegrees = this.transform.localEulerAngles.x;
+    localDegrees = (localDegrees > 180) ? localDegrees - 360 : localDegrees;
+    degreesPercentage = localDegrees / MaxRotationAllowed();
+
+    if (percentageOutput < -degreesPercentage)
+    {
+        float rotationPower = Mathf.Abs(myRotationPid.GetOutput());
+        if (float.IsNaN(rotationPower))
+        {
+            return;
+        }
+
+        this.transform.Rotate(-Vector3.right * sideThrust * rotationPower * Time.fixedDeltaTime, Space.Self);
+    }
+}
+                        </code></pre>
+                        <h2>Challenges</h2>
+                        <p>Two parts when working on this project proved themselves more challenging than expected:</p>
+                        <ul>
+                            <li><strong>Creating the First PID Controller Prototype:</strong> Finding information specifically on applying PID controllers in Unity for flying systems was difficult. This led to a lot of experimenting from scratch and without relying heavily on online sources.</li>
+                            <li><strong>Transitioning from One-Dimensional to Three-Dimensional Control:</strong> Moving from controlling a single variable (\(y\)) to managing all three dimensions with rotation controllers was a significant challenge as this complicated the parameter tuning to cover a wider variety of scenarios.</li>
+                        </ul>
+                        <h2>Visual Demonstrations</h2>
+                        <p><strong>Maneuverability:</strong> The rocket smoothly moves to the target location exercising precise movement.</p>
+                        <img src="../assets/GIFs/pid-rocket-simulator/Maneuverability.gif" alt="A GIF showcasing the maneuverability of the rocket" width="700" height="450">
+                        <p><strong>Controlled Descent:</strong> The rocket performs a precise ‘suicide burn’ landing.</p>
+                        <img src="../assets/GIFs/pid-rocket-simulator/descent.gif" alt="A GIF showcasing the descent and landing of the rocket" width="700" height="450">
+                        <p></p>
+                        <h2>Conclusion</h2>
+                        <p>Working on this project provided valuable insights into the inner workings of PID controllers and how to best leverage the Unity engine. If I were to revisit this project, I might explore using different sensors or more advanced control algorithms to further enhance the rocket's performance. Feel free to examine the code and try the simulation yourself.</p>
+                        <p>For the codebase of this project along with a Unity build, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/PID-Rocket-Simulator">GitHub repository</a>. As a final mention, please note that the code for this project is poorly written and lacks sufficient comments. It has not been rewritten or refactored to adhere to standard coding practices. Therefore, we recommend using the concepts and ideas presented rather than relying on the code itself.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="border-top">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/profile.php?id=100010585878716">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Papaglory">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Marius Naasen 2024<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+</body>
+</html>

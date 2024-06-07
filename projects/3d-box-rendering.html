@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Explore the visualization and rendering of a 3D box on a computer from scratch using linear algebra." />
+    <meta name="keywords" content="Marius Naasen, visualization, rendering, linear algebra, Java" />
+    <meta name="author" content="Marius Naasen" />
+    <title>Visualization of a 3D Box - Marius Naasen</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../assets/img/background/portrait.jpg" alt="Profile picture of Marius Naasen">
+                Marius Naasen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="header-mystory-container" style="background-color: white;">
+        <header class="masthead" style="background-image: url('../assets/img/projects/box_ai.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading text-center">
+                            <img src="../assets/img/background/portrait.jpg" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
+                            <span class="subheading invisible-text">Hi, I am Marius</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>Visualization of a 3D Box</h1>
+                        <p>After taking a course in <a target="_blank" rel="noopener" href="https://www4.uib.no/emner/MAT121">linear algebra</a> during my bachelor studies, I was curious about how we can leverage linear algebra for computer graphics. There was a small section in the course about this, but we never went deeper into it. So I decided to try it on my own.</p>
+                        <h2>Project Overview</h2>
+                        <p>This project involves my implementation of rendering a box in 3D space using linear algebra. Through demonstrations and reviews of important code snippets, we will explore how to apply rotation matrices to a box to visualize its rotation in a virtual environment.</p>
+                        <p>The core of this project involves the following.</p>
+                        <ul>
+                            <li><strong>3D Space Rendering:</strong> We represent a cube using 8 vertices and place a viewer (camera) in the 3D space. The objective is to render the box as seen by the viewer on a 2D plane (the computer screen).</li>
+                            <li><strong>Rotation Matrices:</strong> By applying mathematical rotation matrices, we can rotate the box around its axes, allowing us to visualize its rotation dynamically.</li>
+                        </ul>
+                        <h2>Code Overview</h2>
+                        <p>In this section we will go over the most crucial parts of the code to give an overview.</p>
+                        <h3><code>Box.java</code> Script</h3>
+                        <p>The <code>Box.java</code> class is responsible for drawing the 3D box and applying the rotation matrices.</p>
+                        <ul>
+                            <li>
+                                <strong>Constructor:</strong> Here we initialize the 8 vertices making up the box. These points will later be altered using matrix multiplication.
+                            </li>
+                            <li>
+                                <strong><code class="language-java">RotateYAxis()</code>:</strong> This is a simple standalone method for rotating the box vertices around the \(y\) axis.
+                            </li>
+                            <li>
+                                <strong><code class="language-java">PaintComponent()</code>:</strong> The box is drawn within this method. By inspecting the projected vertices of the box, we draw a green line from each vertex to every other vertex. This is not the most efficient approach as there will be redundancies; however, given the number of vertices, it is a simple and feasible solution.
+                            </li>
+                        </ul>
+                        <pre><code class="language-java">
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
+
+public class Box extends JPanel {
+    private List<Vector> vertices = new ArrayList<>();
+    private List<Vector> projectedVertices = new ArrayList<>();
+    private final Camera camera;
+
+    // Constructor to initialize the box with default vertices
+    public Box(Camera camera) {
+        this.camera = camera;
+        vertices.add(new Vector(-0.3, 0.3, -0.3, 1));
+        vertices.add(new Vector(0.3, 0.3, -0.3, 1));
+        vertices.add(new Vector(-0.3, 0.3, 0.3, 1));
+        vertices.add(new Vector(0.3, 0.3, 0.3, 1));        
+        vertices.add(new Vector(-0.3, -0.3, -0.3, 1));
+        vertices.add(new Vector(0.3, -0.3, -0.3, 1));
+        vertices.add(new Vector(-0.3, -0.3, 0.3, 1));
+        vertices.add(new Vector(0.3, -0.3, 0.3, 1));
+    }
+
+    // Method to apply rotation around the Y-axis
+    public void RotateYAxis(double angle) {
+        double[][] rotationMatrix = {
+            {Math.cos(angle), 0, Math.sin(angle), 0},
+            {0, 1, 0, 0},
+            {-Math.sin(angle), 0, Math.cos(angle), 0},
+            {0, 0, 0, 1}
+        };
+        Matrix rotation = new Matrix(rotationMatrix);
+        List<Vector> newVertices = new ArrayList<>();
+        for (Vector vertex : vertices) {
+            newVertices.add(rotation.multiply(vertex));
+        }
+        vertices = newVertices;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        calculateProjection();
+        calculateIntoScreen();
+        g.setColor(Color.GREEN);
+        this.setBackground(Color.BLACK);
+
+        // Draw vertices and edges of the box
+        for (int i = 0; i < projectedVertices.size(); i++) {
+            g.setColor(Color.RED);
+            g.drawOval((int)projectedVertices.get(i).getValue(0) - 5, (int)projectedVertices.get(i).getValue(1) - 5, 10, 10);
+            for (int j = 0; j < projectedVertices.size(); j++) {
+                if (i == j) continue;
+                g.setColor(Color.GREEN);
+                Vector v1 = projectedVertices.get(i);
+                Vector v2 = projectedVertices.get(j);
+                g.drawLine((int)v1.getValue(0), (int)v1.getValue(1), (int)v2.getValue(0), (int)v2.getValue(1));
+            }
+        }
+    }
+
+    private void calculateProjection() {
+        // Code to project 3D points to 2D screen
+    }
+
+    private void calculateIntoScreen() {
+        // Code to transform 3D points to fit the screen size
+    }
+}
+                        </code></pre>
+                        <h3><code>MainMovement.java</code> Script</h3>
+                        <p>One of the main classes is found in <code>MainMovement.java</code>. By running this class, we setup the necessities like the camera, the box and parameters. The unique part about this class is that it allows for keyboard inputs to rotate the box interactively. Note that we are only interesed when the key is pressed down, thus there is no implementation for the methods <code class="language-java">keyReleased()</code> and <code class="language-java">keyTyped()</code>.</p>
+                        <pre><code class="language-java">
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainMovement {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setSize(1100, 1100);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Initialize camera position
+        List<Double> cameraPos = new ArrayList<>();
+        cameraPos.add(0.0);
+        cameraPos.add(0.0);
+        cameraPos.add(1.0);
+        Camera camera = new Camera(cameraPos);
+
+        double speed = 1.5;
+        Box box = new Box(camera);
+        frame.add(box);
+
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                switch (key) {
+                    case KeyEvent.VK_W:
+                        box.RotateXAxis(Math.toRadians(speed)); // Rotate up
+                        break;
+                    case KeyEvent.VK_S:
+                        box.RotateXAxis(Math.toRadians(-speed)); // Rotate down
+                        break;
+                    case KeyEvent.VK_A:
+                        box.RotateYAxis(Math.toRadians(speed)); // Rotate left
+                        break;
+                    case KeyEvent.VK_D:
+                        box.RotateYAxis(Math.toRadians(-speed)); // Rotate right
+                        break;
+                }
+                frame.repaint();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        });
+    }
+}
+                        </code></pre>
+                        <h3><code>Matrix.java</code> Script</h3>
+                        <p>The <code>Matrix.java</code> class provides the necessary mathematical operations for handling matrices, such as matrix multiplication with a vector and matrix multiplication with another matrix. The methods for vector and matrix multiplication are implemented from scratch, but any matrix library would suffice.</p>
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+public class Matrix {
+    private List<Vector> matrix;
+    private int width;
+    private int height;
+
+    // Constructor
+    public Matrix(List<Vector> vectors) {
+        this.matrix = vectors;
+        this.height = vectors.size();
+        this.width = vectors.get(0).getDim();
+    }
+
+    // Method for matrix multiplication with a vector
+    public Vector multiply(Vector v) {
+        if (v.getDim() != width) throw new IllegalArgumentException("v must be same width as matrix");
+        List<Double> newVectorValues = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            double sum = 0;
+            for (int j = 0; j < width; j++) {
+                sum += v.getValue(j) * matrix.get(j).getValue(i);
+            }
+            newVectorValues.add(sum);
+        }
+        return new Vector(newVectorValues);
+    }
+
+    // Method for matrix multiplication
+    public Matrix multiply(Matrix other) {
+        if (other.getDim() != width) throw new IllegalArgumentException("other must have dim == this.width");
+        List<Vector> newMatrixVectors = new ArrayList<>();
+        for (int i = 0; i < other.getWidth(); i++ ) {
+            newMatrixVectors.add(this.multiply(other.getVectorAt(i)));
+        }
+        return new Matrix(newMatrixVectors);
+    }
+}
+                        </code></pre>
+                        <h2>Visual Demonstration</h2>
+                        <p>The following is a demonstration of the box as it spins around its \(y\) axis.</p>
+                        <img src="../assets/GIFs/3d-box-rendering/box.gif" alt="A GIF of a rotating 3D box" width="600" height="600">
+                        <p></p>
+                        <h2>Conclusion</h2>
+                        <p>This project provided insights into the application of linear algebra in computer graphics. By representing a 3D box and using rotation matrices, we can visualize dynamic rotations and transformations, demonstrating the practical use of mathematical concepts in programming.</p>
+                        <p>For the codebase of this project along with three Unity demo builds, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/3D-Box-Rendering">GitHub repository</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="border-top">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/profile.php?id=100010585878716">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Papaglory">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Marius Naasen 2024<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+</body>
+</html>
