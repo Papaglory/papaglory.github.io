@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Explore the codebase of the application that simulates and visualizes both the heat equation, wave equation and more." />
+    <meta name="keywords" content="Marius Naasen, differential equation, physics, simulation, visualization, Java" />
+    <meta name="author" content="Marius Naasen" />
+    <title>An Application for Simulating the Heat and Wave Equations - Marius Naasen</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../assets/img/background/portrait.jpg" alt="Profile picture of Marius Naasen">
+                Marius Naasen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="header-mystory-container" style="background-color: white;">
+        <header class="masthead" style="background-image: url('../assets/img/projects/ripples_ai.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading text-center">
+                            <img src="../assets/img/background/portrait.jpg" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
+                            <span class="subheading invisible-text">Hi, I am Marius</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>An Application for Simulating the Heat and Wave Equation</h1>
+                        <p>After taking a university course on <a target="_blank" rel="noopener" href="https://www4.uib.no/emner/MAT131">differential equations</a>, I found myself fascinated by the heat and wave equations we studied in the final chapters. Despite the comprehensive coverage of the subject, there was a lack of dynamic visualizations that could bring these equations to life. This inspired me to create the "Heat-Wave-Equation-Simulator" project to visualize the behavior of these equations over time.</p>
+                        <p>The project I developed is a numerical solver and visualizer for three types of differential equations: the heat equation, the wave equation, and the wave equation with damping. By considering the case with one spatial variable, the program creates a Hermite spline interpolation from user-inputted vertices, models the numerical solution, and visualizes the results using Fourier series coefficients.</p>
+                        <h2>How It Works</h2>
+                        <p>The simulation leverages two primary methods: cubic Hermite interpolation and the Fourier series method. The cubic Hermite interpolation ensures that the initial conditions are accurately represented by creating smooth curves between user-defined points. This is crucial for the accurate initialization of the heat and wave equations.</p>
+                        <p>The Fourier series method, on the other hand, is used to solve these differential equations. By expressing the solution as a sum of sine functions with coefficients determined by the initial polynomial from the spline interpolation, the program can simulate the evolution of the differential equations over time. This method is particularly effective for capturing the periodic nature of wave and heat distributions.</p>
+                        <h2>Assumptions</h2>
+                        <p>For the heat equation, we assume the spatial variable \(x\) goes from \(0\) to \(L\) where \(L>0\) is defined as the upper bound of the domain. Let \(u(x,t)\) be the temperature at position \(x\) at time \(t\). The boundary conditions are given by</p>
+                        <p>
+                        \[u(0,t) = u(L,t) = 0\text{, for all } t\ge0.\]
+                        </p>
+                        <p>Similarly, for the wave equation, we assume the spatial variable \(x\) goes from \(0\) to \(L\) where \(L\) is defined as in the heat equation. Letting \(v(x,t)\) be the spatial displacement from the origin at position \(x\) at time \(t\) we have the boundary conditions given by</p>
+                        <p>
+                        \[v(0,t) = v(L,t) = 0\text{, for all } t\ge0\]
+                        </p>
+                        <p>and</p>
+                        <p>
+                        \[\frac{dv}{dt}v(x,0)=0, \text{ where } 0\leq x\leq L.\]
+                        </p>
+                        <h2>Creating the Simulation</h2>
+                        <p>The project consists of several main classes that implement interfaces for setting up and running the simulations. For instance, the <code class="language-java">WaveSimulation</code> class initializes parameters such as the list of points, Fourier series terms, and the wave propagation velocity. In the following code snippet, we have the constructor of the <code class="language-java">WaveSimulation</code> class initializing key parameters for the simulation. Furthermore, the <code class="language-java">setupSimulation()</code> method prepares the simulation by constructing a cubic Hermite spline from user input points. The Fourier coefficients to represent this spline are then calculated, resulting in the initial wave distribution at time step zero, along with satisfied boundary conditions. The output of the method is a <code class="language-java">GraphWave</code> object which contains the constructed Fourier series corresponding to the simulation.</p>                     
+                        <pre><code class="language-java">
+public class WaveSimulation implements Simulation {
+    List<Vertex> m_points;
+    float m_deltaX;
+    int m_fourierN;
+    float m_beta;
+    float m_L;
+    
+    public WaveSimulation(List<Vertex> points, float deltaX, int fourierN, float beta, float L) {
+        m_points = points;
+        m_fourierN = fourierN;
+        m_L = L;
+        m_deltaX = deltaX;
+        m_beta = beta;
+    }
+    
+    @Override
+    public Graph setupSimulation() {
+        // Implementation details...
+    }
+    
+}
+                        </code></pre>
+                        <p>Further examining the <code class="language-java">GraphWave</code> object, we find the <code class="language-java">updateVertices()</code> method. Within this method, the domain from zero to <code class="language-java">m_L</code> is discretized. Each discretized point is evaluated using the Fourier series at a time step set by the <code class="language-java">setGraph()</code> method. By evaluating all discrete points over the domain, we obtain the new temperature distribution.</p>
+                        <pre><code class="language-java">
+@Override
+public void setGraph(double time) {
+    if (time < 0) throw new IllegalArgumentException("time is negative");       
+    m_time = time;
+    updateVertices();
+}
+                            
+/**
+ * Updates vertices for the given time: m_time. Using m_deltaX for accuracy. 
+ */
+private void updateVertices() {
+    List<Vertex> temp = new ArrayList<>();
+    double xPos = 0;
+    //creating vertices until the whole domain has been taken
+    while (xPos < m_L) {
+        Vertex v = new Vertex();
+        v.setX(xPos);
+        //finding y value
+        double y = 0;
+        for (int n = 0; n < m_coefficients.size(); n++)
+            y += m_coefficients.get((n)) * Math.sin((n+1) * Math.PI * xPos / m_L) * Math.cos((n+1) * Math.PI * m_beta * m_time / m_L);
+        
+        v.setY(y);
+        temp.add(v);
+        xPos += m_deltaX;
+    }
+    //add the last vertex, due to heat equation assumption, this vertex lies at (m_L, 0)
+    Vertex w = new Vertex();
+    w.setX(m_L);
+    w.setY(0);
+    temp.add(w);
+    
+    //overwrite and save
+    m_vertices = temp;
+}
+                        </code></pre>
+                        <p></p>
+                        <h2>Visual Demonstrations</h2>
+                        <p><strong>Heat Equation:</strong> Visualizing heat distribution over time.</p>
+                        <img src="../assets/GIFs/heat-wave-equation-simulator/heat.gif" alt="A GIF showcasing the diffusion of temperature over a medium" width="700" height="400">
+                        <p><strong>Wave Equation:</strong> Observing wave propagation over time.</p>
+                        <img src="../assets/GIFs/heat-wave-equation-simulator/wave.gif" alt="A GIF showcasing waves over a medium" width="700" height="400">
+                        <p><strong>Wave Equation with Damping:</strong> Seeing how damping influences wave behavior.</p>
+                        <img src="../assets/GIFs/heat-wave-equation-simulator/wavedamp.gif" alt="A GIF showcasing waves being damped over a medium" width="700" height="400">
+                        <p><strong>A Comprehensive Program UI:</strong> This allows for customizing detailed examples to simulate.</p>
+                        <img src="../assets/img/projects/app_ui.jpg" alt="Wave Equation with Damping" width="600" height="600">
+                        <p></p>
+                        <h2>Personal Insights and Future Directions</h2>
+                        <p>This project has been an enriching experience, deepening my understanding of differential equations and numerical methods. It was particularly satisfying to finally be able to see theoretical concepts visualized in motion. Future improvements and ideas for this project might include incorporating more complex boundary conditions and optimizing the calculations for better performance.</p>
+                        <h2>Conclusion</h2>
+                        <p>This project bridges the theoretical and practical aspects of differential equations, offering an engaging way to visualize and understand its mathematical concepts. For more detailed information and to explore the source code, visit the <a href="https://github.com/Heat-Wave-Equation-Simulator/" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="border-top">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/profile.php?id=100010585878716">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Papaglory">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Marius Naasen 2024<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+</body>
+</html>
