@@ -1,271 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Explore the codebase of the project that automates the decision-making of a battleship using utility AI." />
-        <meta name="keywords" content="Marius Naasen, AI, utility AI, game development, C#, Unity" />
-        <meta name="author" content="Marius Naasen" />
-        <title>Autonomous Battleship with Utility AI - Marius Naasen</title>
-        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
-        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="aa7f56c4-9008-4fcd-80b2-f3b937120743" data-blockingmode="auto" type="text/javascript"></script>
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-        <link href="../css/styles.css" rel="stylesheet" />
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-csharp.min.js"></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="../index.html">
-                <img src="../assets/img/background/portrait.jpg" alt="Profile picture of Marius Naasen">
-                Marius Naasen
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
-                    </ul>
-                </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDVNVDZGNG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-ZDVNVDZGNG');
+    </script>
+    <meta name="description" content="Explore the codebase of the project that automates the decision-making of a battleship using utility AI." />
+    <meta name="keywords" content="Marius Naasen, AI, utility AI, game development, C#, Unity" />
+    <meta name="author" content="Marius Naasen" />
+    <title>Autonomous Battleship with Utility AI - Marius Naasen</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="aa7f56c4-9008-4fcd-80b2-f3b937120743" data-blockingmode="auto" type="text/javascript"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-csharp.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html">
+            <img src="../assets/img/background/portrait.jpg" alt="Profile picture of Marius Naasen">
+            Marius Naasen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
+                </ul>
             </div>
-        </nav>
-        <div class="header-mystory-container" style="background-color: white;">
-        <header class="masthead" style="background-image: url('../assets/img/projects/warship_ai.jpg')">
-            <div class="container position-relative px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="site-heading text-center">
-                            <img src="../assets/img/background/portrait.jpg" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
-                            <span class="subheading invisible-text">Hi, I am Marius</span>
-                        </div>
+        </div>
+    </nav>
+    <div class="header-mystory-container" style="background-color: white;">
+    <header class="masthead" style="background-image: url('../assets/img/projects/warship_ai.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading text-center">
+                        <img src="../assets/img/background/portrait.jpg" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
+                        <span class="subheading invisible-text">Hi, I am Marius</span>
                     </div>
                 </div>
             </div>
-        </header>
-            <main class="mb-4">
-                <div class="container px-4 px-lg-5">
-                    <div class="row gx-4 gx-lg-5 justify-content-center">
-                        <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
-                            <h1>Autonomous Battleship with Utility AI</h1>
-                            <p>This project showcases an autonomous battleship that navigates a map, searches for enemy vessels, engages in combat, and collects remains post-battle. The decision-making process is driven by utility AI, which uses mathematical functions and scoring systems to evaluate and prioritize actions. This article delves into the project’s structure, key components, and the algorithms that power its intelligent behavior.</p>
-                            <p>Note that this is an incomplete project.</p>
-                            <h2>Project Overview</h2>
-                            <p>The battleship project is designed to autonomously patrol a designated area, identify enemy vessels, engage in combat, and manage its resources effectively. The utility AI system ensures that the battleship makes intelligent decisions in various scenarios, including when to attack an enemy, when to search for enemies, and when to refuel.</p>
-                            <p>This project consists of the following key features.</p>
-                            <ul>
-                                <li><strong>Autonomous Navigation:</strong> The battleship navigates the map on its own, patrolling for enemy vessels.</li>
-                                <li><strong>Combat Engagement:</strong> Upon detecting an enemy, the battleship engages in combat using physics-based calculations to determine the correct firing angle.</li>
-                                <li><strong>Resource Management:</strong> The battleship monitors its fuel levels and seeks refueling stations when necessary.</li>
-                            </ul>
-                            <h2>Key Components</h2>
-                            <p>The project is built around several core scripts that handle different aspects of the battleship’s behavior.</p>
-                            <ul>
-                                <li>
-                                    <p>
-                                    <code class="language-csharp">ScoreGiver.cs</code>: This script is responsible for assigning scores to different actions based on their utility. The scores help the decision-making system prioritize actions.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <code class="language-csharp">Patrol.cs</code>: Manages the patrolling behavior of the battleship. It defines the patrol routes and ensures the battleship covers the designated area effectively.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <code class="language-csharp">TargetFinder.cs</code>: Implements the logic to detect and identify enemy vessels. It scans the area and flags potential targets for engagement.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <code class="language-csharp">DecisionMaker.cs</code>: The central script that integrates all components. It makes decisions based on the utility scores assigned by the ScoreGiver.cs script, directing the battleship’s actions accordingly.
-                                    </p>
-                                </li>
-                            </ul>
-                            <h2>Code Overview</h2>
-                            <p>In this section we will highlight the essential parts of the code to the previously mentioned scripts.</p>
-                            <h3><code>ScoreGiver.cs</code> Script</h3>
-                            <p>The following code contains a simplified version of the <code class="language-csharp">ScoreGiver.cs</code> script to make it easier to understand the ideas and concepts used. The <code class="language-csharp">GetScoreForAction()</code> method receives an action as a string and returns a score based on the action's utility. For each case in the switch statement, a specific method is called to calculate scores for different actions, such as engaging an enemy or refueling.</p>
-                            <pre><code class="language-csharp">
+        </div>
+    </header>
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>Autonomous Battleship with Utility AI</h1>
+                        <p>This project showcases an autonomous battleship that navigates a map, searches for enemy vessels, engages in combat, and collects remains post-battle. The decision-making process is driven by utility AI, which uses mathematical functions and scoring systems to evaluate and prioritize actions. This article delves into the project’s structure, key components, and the algorithms that power its intelligent behavior.</p>
+                        <p>Note that this is an incomplete project.</p>
+                        <h2>Project Overview</h2>
+                        <p>The battleship project is designed to autonomously patrol a designated area, identify enemy vessels, engage in combat, and manage its resources effectively. The utility AI system ensures that the battleship makes intelligent decisions in various scenarios, including when to attack an enemy, when to search for enemies, and when to refuel.</p>
+                        <p>This project consists of the following key features.</p>
+                        <ul>
+                            <li><strong>Autonomous Navigation:</strong> The battleship navigates the map on its own, patrolling for enemy vessels.</li>
+                            <li><strong>Combat Engagement:</strong> Upon detecting an enemy, the battleship engages in combat using physics-based calculations to determine the correct firing angle.</li>
+                            <li><strong>Resource Management:</strong> The battleship monitors its fuel levels and seeks refueling stations when necessary.</li>
+                        </ul>
+                        <h2>Key Components</h2>
+                        <p>The project is built around several core scripts that handle different aspects of the battleship’s behavior.</p>
+                        <ul>
+                            <li>
+                                <p>
+                                <code class="language-csharp">ScoreGiver.cs</code>: This script is responsible for assigning scores to different actions based on their utility. The scores help the decision-making system prioritize actions.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <code class="language-csharp">Patrol.cs</code>: Manages the patrolling behavior of the battleship. It defines the patrol routes and ensures the battleship covers the designated area effectively.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <code class="language-csharp">TargetFinder.cs</code>: Implements the logic to detect and identify enemy vessels. It scans the area and flags potential targets for engagement.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <code class="language-csharp">DecisionMaker.cs</code>: The central script that integrates all components. It makes decisions based on the utility scores assigned by the ScoreGiver.cs script, directing the battleship’s actions accordingly.
+                                </p>
+                            </li>
+                        </ul>
+                        <h2>Code Overview</h2>
+                        <p>In this section we will highlight the essential parts of the code to the previously mentioned scripts.</p>
+                        <h3><code>ScoreGiver.cs</code> Script</h3>
+                        <p>The following code contains a simplified version of the <code class="language-csharp">ScoreGiver.cs</code> script to make it easier to understand the ideas and concepts used. The <code class="language-csharp">GetScoreForAction()</code> method receives an action as a string and returns a score based on the action's utility. For each case in the switch statement, a specific method is called to calculate scores for different actions, such as engaging an enemy or refueling.</p>
+                        <pre><code class="language-csharp">
 public float GetScoreForAction(string action)
 {
-    float score = 0f;
-    switch(action)
-    {
-        case "EngageEnemy":
-            score = CalculateEnemyEngagementScore();
-            break;
-        case "Refuel":
-            score = CalculateRefuelScore();
-            break;
-        // Other cases...
-    }
-    return score;
+float score = 0f;
+switch(action)
+{
+    case "EngageEnemy":
+        score = CalculateEnemyEngagementScore();
+        break;
+    case "Refuel":
+        score = CalculateRefuelScore();
+        break;
+    // Other cases...
 }
-                            </code></pre>
-                            <p>The <code class="language-csharp">CalculateEnemyEngagementScore()</code> and <code class="language-csharp">CalculateRefuelScore()</code> methods contain the logic to calculate the utility of engaging an enemy or refueling, respectively. These calculations consider factors like the proximity of enemies and current fuel levels. By comparing the utility values, the battleship will now be in a place to make educated  decisions.</p>
-                            <pre><code class="language-csharp">
+return score;
+}
+                        </code></pre>
+                        <p>The <code class="language-csharp">CalculateEnemyEngagementScore()</code> and <code class="language-csharp">CalculateRefuelScore()</code> methods contain the logic to calculate the utility of engaging an enemy or refueling, respectively. These calculations consider factors like the proximity of enemies and current fuel levels. By comparing the utility values, the battleship will now be in a place to make educated  decisions.</p>
+                        <pre><code class="language-csharp">
 private float CalculateEnemyEngagementScore()
 {
-    // Logic to calculate score based on enemy proximity
+// Logic to calculate score based on enemy proximity
 }
 
 private float CalculateRefuelScore()
 {
-    // Logic to calculate score based on current fuel levels
+// Logic to calculate score based on current fuel levels
 }
-                            </code></pre>
-                            <h3><code>TargetFinder.cs</code> Script</h3>
-                            <p>The concepts for managing target detection behaviour are encapsulated in the following simplified code snippet and can be broken down by describing the following components.</p>
-                            <ul>
-                                <li><code class="language-csharp">targets</code> is a list containing all the current detected targets. This list gets cleared before every detection sweep.</li>
-                                <li><code class="language-csharp">detectionRadius</code> defines the range within which the battleship can detect objects.</li>
-                                <li>The <code class="language-csharp">Update()</code> method calls <code class="language-csharp">SearchForTargets()</code> every frame to continually check for nearby targets.</li>
-                                <li><code class="language-csharp">SearchForTargets()</code> uses <code class="language-csharp">Physics.OverlapSphere</code> to find all colliders within the <code class="language-csharp">detectionRadius</code>. It then iterates through these colliders to check if any are tagged as "Enemy" or "Player". If so, the collider corresponding to the detected object is added to the <code class="language-csharp">targets</code> list.</li>
-                            </ul>
-                            <pre><code class="language-csharp">
+                        </code></pre>
+                        <h3><code>TargetFinder.cs</code> Script</h3>
+                        <p>The concepts for managing target detection behaviour are encapsulated in the following simplified code snippet and can be broken down by describing the following components.</p>
+                        <ul>
+                            <li><code class="language-csharp">targets</code> is a list containing all the current detected targets. This list gets cleared before every detection sweep.</li>
+                            <li><code class="language-csharp">detectionRadius</code> defines the range within which the battleship can detect objects.</li>
+                            <li>The <code class="language-csharp">Update()</code> method calls <code class="language-csharp">SearchForTargets()</code> every frame to continually check for nearby targets.</li>
+                            <li><code class="language-csharp">SearchForTargets()</code> uses <code class="language-csharp">Physics.OverlapSphere</code> to find all colliders within the <code class="language-csharp">detectionRadius</code>. It then iterates through these colliders to check if any are tagged as "Enemy" or "Player". If so, the collider corresponding to the detected object is added to the <code class="language-csharp">targets</code> list.</li>
+                        </ul>
+                        <pre><code class="language-csharp">
 public class TargetFinder : MonoBehaviour
 {
-    List<Collider> targets = new List<Collider>();
-    public float detectionRadius;
+List<Collider> targets = new List<Collider>();
+public float detectionRadius;
 
-    void Update()
-    {
-        SearchForTargets();
-    }
+void Update()
+{
+    SearchForTargets();
+}
 
-    IEnumerator SearchForTargets()
+IEnumerator SearchForTargets()
+{
+    targets.Clear()
+    Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+    foreach (var hitCollider in hitColliders)
     {
-        targets.Clear()
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        foreach (var hitCollider in hitColliders)
+        if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Player"))
         {
-            if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Player"))
-            {
-                targets.Add(hitCollider);
-            }
+            targets.Add(hitCollider);
         }
     }
 }
-                            </code></pre>
-                            <h3><code class="language-csharp">DecisionMaker.cs</code> Script</h3>
-                            <p>The <code class="language-csharp">DecisionMaker.cs</code> script as previously mentioned is the central component that integrates all the other scripts and directs the battleship’s actions based on utility scores. The following code is a simplified version of the actual script, making it easier to understand by breaking it down into the following components.</p>
-                            <ul>
-                                <li>The <code class="language-csharp">Start()</code> method initializes references to the <code class="language-csharp">ScoreGiver.cs</code>, <code class="language-csharp">Patrol.cs</code> and <code class="language-csharp">TargetFinder.cs</code> scripts.</li>
-                                <li>The <code class="language-csharp">Update()</code> method calls <code class="language-csharp">MakeDecision()</code> every frame to continually evaluate the best action to take.</li>
-                                <li><code class="language-csharp">MakeDecision()</code> retrieves utility scores for patrolling, engaging an enemy (if there is one available) and refueling by querying the <code class="language-csharp">GetScoreForAction()</code> method.</li>
-                                <li><code class="language-csharp">EngageEnemy()</code>, <code class="language-csharp">Refuel()</code> and <code class="language-csharp">patrol()</code> methods contain the logic for each respective action, ensuring the battleship takes an action based on the highest utility score.</li>
-                            </ul>
-                            <pre><code class="language-csharp">
+}
+                        </code></pre>
+                        <h3><code class="language-csharp">DecisionMaker.cs</code> Script</h3>
+                        <p>The <code class="language-csharp">DecisionMaker.cs</code> script as previously mentioned is the central component that integrates all the other scripts and directs the battleship’s actions based on utility scores. The following code is a simplified version of the actual script, making it easier to understand by breaking it down into the following components.</p>
+                        <ul>
+                            <li>The <code class="language-csharp">Start()</code> method initializes references to the <code class="language-csharp">ScoreGiver.cs</code>, <code class="language-csharp">Patrol.cs</code> and <code class="language-csharp">TargetFinder.cs</code> scripts.</li>
+                            <li>The <code class="language-csharp">Update()</code> method calls <code class="language-csharp">MakeDecision()</code> every frame to continually evaluate the best action to take.</li>
+                            <li><code class="language-csharp">MakeDecision()</code> retrieves utility scores for patrolling, engaging an enemy (if there is one available) and refueling by querying the <code class="language-csharp">GetScoreForAction()</code> method.</li>
+                            <li><code class="language-csharp">EngageEnemy()</code>, <code class="language-csharp">Refuel()</code> and <code class="language-csharp">patrol()</code> methods contain the logic for each respective action, ensuring the battleship takes an action based on the highest utility score.</li>
+                        </ul>
+                        <pre><code class="language-csharp">
 public class DecisionMaker : MonoBehaviour
 {
-    private ScoreGiver scoreGiver;
-    private Patrol patrol;
-    private TargetFinder targetFinder;
+private ScoreGiver scoreGiver;
+private Patrol patrol;
+private TargetFinder targetFinder;
 
-    void Start()
+void Start()
+{
+    scoreGiver = GetComponent<ScoreGiver>();
+    patrol = GetComponent<Patrol>();
+    targetFinder = GetComponent<TargetFinder>();
+}
+
+void Update()
+{
+    MakeDecision();
+}
+
+private void MakeDecision()
+{
+    float engageScore = scoreGiver.GetScoreForAction("EngageEnemy");
+    float refuelScore = scoreGiver.GetScoreForAction("Refuel");
+    float patrolScore = scoreGiver.GetScoreForAction("patrol");
+
+    if (highestScore(engageScore)) // Pseudocode
     {
-        scoreGiver = GetComponent<ScoreGiver>();
-        patrol = GetComponent<Patrol>();
-        targetFinder = GetComponent<TargetFinder>();
+        EngageEnemy();
     }
-
-    void Update()
+    else if (highestScore(refuelScore)) // Pseudocode
     {
-        MakeDecision();
+        refuel();
     }
-
-    private void MakeDecision()
+    else
     {
-        float engageScore = scoreGiver.GetScoreForAction("EngageEnemy");
-        float refuelScore = scoreGiver.GetScoreForAction("Refuel");
-        float patrolScore = scoreGiver.GetScoreForAction("patrol");
-
-        if (highestScore(engageScore)) // Pseudocode
-        {
-            EngageEnemy();
-        }
-        else if (highestScore(refuelScore)) // Pseudocode
-        {
-            refuel();
-        }
-        else
-        {
-            patrol();
-        }
-    }
-
-    private void EngageEnemy()
-    {
-        // Logic to engage enemy
-    }
-
-    private void Refuel()
-    {
-        // Logic to refuel
-    }
-
-    private void Patrol()
-    {
-        // Logic to patrol
+        patrol();
     }
 }
-                            </code></pre>
-                            <h2>Visual Demonstrations</h2>
-                            <p>The following visuals illustrate the battleship’s behavior in different scenarios.</p>
-                            <h3>Combat Engagement</h3>
-                            <img src="../assets/GIFs/ai-warship/preview-fire.gif" alt="A GIF showcasing the fire mechanics of the battleship" width="771" height="500" loading="lazy"/>
-                            <p>The battleship uses physics-based calculations to determine the correct firing angle to hit its targets.</p>
-                            <h3>Patrolling</h3>
-                            <img src="../assets/GIFs/ai-warship/preview-search.gif" alt="A GIF showcasing the patrolling of the battleship" width="771" height="500" loading="lazy"/>
-                            <p>The battleship patrols the designated area, and upon detecting an enemy vessel, it decides to engage.</p>
-                            <h3>Refueling</h3>
-                            <img src="../assets/GIFs/ai-warship/preview-refuel.gif" alt="A GIF showcasing the refueling of the battleship" width="771" height="500" loading="lazy"/>
-                            <p>When the battleship’s fuel gets low, the utility functions determine that it should seek a refueling station.</p>
-                            <h2>Conclusion</h2>
-                            <p>This project has been fascinating to work on, providing me with an opportunity to learn about utility AI. Despite its unfinished state, it serves as a valuable educational tool. The purpose of making it public is to allow others to benefit from exploring and drawing inspiration from the concepts and ideas discussed in this project, demonstrating the use of utility AI.</p>
-                            <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/ai-warship" target="_blank" rel="noopener">GitHub repository</a>.</p>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-        <footer class="border-top">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <ul class="list-inline text-center">
-                            <li class="list-inline-item">
-                                <a href="https://www.facebook.com/profile.php?id=100010585878716">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="https://github.com/Papaglory">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="small text-center text-muted fst-italic">&copy; Marius Naasen 2024. All rights reserved.<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap.</a></div>
+
+private void EngageEnemy()
+{
+    // Logic to engage enemy
+}
+
+private void Refuel()
+{
+    // Logic to refuel
+}
+
+private void Patrol()
+{
+    // Logic to patrol
+}
+}
+                        </code></pre>
+                        <h2>Visual Demonstrations</h2>
+                        <p>The following visuals illustrate the battleship’s behavior in different scenarios.</p>
+                        <h3>Combat Engagement</h3>
+                        <img src="../assets/GIFs/ai-warship/preview-fire.gif" alt="A GIF showcasing the fire mechanics of the battleship" width="771" height="500" loading="lazy"/>
+                        <p>The battleship uses physics-based calculations to determine the correct firing angle to hit its targets.</p>
+                        <h3>Patrolling</h3>
+                        <img src="../assets/GIFs/ai-warship/preview-search.gif" alt="A GIF showcasing the patrolling of the battleship" width="771" height="500" loading="lazy"/>
+                        <p>The battleship patrols the designated area, and upon detecting an enemy vessel, it decides to engage.</p>
+                        <h3>Refueling</h3>
+                        <img src="../assets/GIFs/ai-warship/preview-refuel.gif" alt="A GIF showcasing the refueling of the battleship" width="771" height="500" loading="lazy"/>
+                        <p>When the battleship’s fuel gets low, the utility functions determine that it should seek a refueling station.</p>
+                        <h2>Conclusion</h2>
+                        <p>This project has been fascinating to work on, providing me with an opportunity to learn about utility AI. Despite its unfinished state, it serves as a valuable educational tool. The purpose of making it public is to allow others to benefit from exploring and drawing inspiration from the concepts and ideas discussed in this project, demonstrating the use of utility AI.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/ai-warship" target="_blank" rel="noopener">GitHub repository</a>.</p>
                     </div>
                 </div>
             </div>
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/scripts.js"></script>
-    </body>
+        </main>
+    </div>
+    <footer class="border-top">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/profile.php?id=100010585878716">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Papaglory">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">&copy; Marius Naasen 2024. All rights reserved.<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap.</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/scripts.js"></script>
+</body>
 </html>
