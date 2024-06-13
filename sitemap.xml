@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://mariusnaasen.com/</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/assets/files/cv.pdf</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/pid-rocket-simulator</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/heat-wave-equation-simulator</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/3d-box-rendering</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/heat-equation-2d</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/ai-warship</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/thesis</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/dream-control</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/battleship</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/assets/files/thesis.pdf</loc>
+  <lastmod>2024-06-13T07:18:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
