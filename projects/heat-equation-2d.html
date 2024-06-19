@@ -75,7 +75,8 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
                         <h1>Heat Equation with Two Spatial Variables</h1>
-                        <p>After completing my project called <a target="_blank" rel="noopener" href="https://mariusnaasen.com/projects/heat-wave-equation-simulator">heat-wave-equation-simulator</a>, which is a simulator for one spatial variable, I was inspired to extend the concept to two spatial variables, leading to the development of this heat simulation project. This project explores numerical methods and visualization techniques to model heat distribution dynamically across a given area.</p>
+                        <p>After completing my project called <a target="_blank" rel="noopener" href="https://mariusnaasen.com/projects/heat-wave-equation-simulator">heat-wave-equation-simulator</a>, which is a project for simulating the heat equation, wave equation and wave equation with damping using one spatial variable, I was inspired to extend the concept to two spatial variables, leading to the development of this heat simulation project. This project explores numerical methods and visualization techniques to model heat distribution dynamically across a given area.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/Heat-Equation-2D">GitHub repository</a>.</p>
                         <h2>Project Overview</h2>
                         <p>The heat simulation project is designed to model the distribution of heat across a square domain over time, using the finite difference method to solve the 2D heat equation numerically. The boundary conditions are set to zero, and the initial heat distribution is represented by a polynomial spline surface constructed by utilizing Hermite spline interpolation. The points used to construct the polynomial spline are from user-defined input points in 3D space.</p>
                         <h2>Key Components</h2>
@@ -169,7 +170,6 @@ private SimpleMatrix projectToMesh(Polynomial poly, int meshX, int meshY) {
                         <p>Here, we can see the heat diffusing over time due to the lower temperature of the boundary, which is set to zero. The initial areas with a spike in temperature quickly diffuse.</p>
                         <h2>Conclusion</h2>
                         <p>This project bridges theoretical and practical aspects of differential equations, offering a way to visualize and understand heat distributions. By extending the heat-wave-equation-simulator to two spatial variables, it demonstrates the application of numerical methods in simulating differential equation over time. Future improvements could include optimizing calculations for better performance and exploring more complex boundary conditions.</p>
-                        <p>For more information and to explore the codebase, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/Heat-Equation-2D">GitHub repository</a>.</p>
                     </div>
                 </div>
             </div>

@@ -77,6 +77,7 @@
                         <h1>An Application for Simulating the Heat and Wave Equation</h1>
                         <p>After taking a university course on <a target="_blank" rel="noopener" href="https://www4.uib.no/emner/MAT131">differential equations</a>, I found myself fascinated by the heat and wave equations we studied in the final chapters. Despite the comprehensive coverage of the subject, there was a lack of dynamic visualizations that could bring these equations to life. This inspired me to create the "Heat-Wave-Equation-Simulator" project to visualize the behavior of these equations over time.</p>
                         <p>The project I developed is a numerical solver and visualizer for three types of differential equations: the heat equation, the wave equation, and the wave equation with damping. By considering the case with one spatial variable, the program creates a Hermite spline interpolation from user-inputted vertices, models the numerical solution, and visualizes the results using Fourier series coefficients.</p>
+                        <p>For more information and to explore the source code, please refer to the <a href="https://github.com/papaglory/Heat-Wave-Equation-Simulator/" target="_blank" rel="noopener">GitHub repository</a>.</p>
                         <h2>How It Works</h2>
                         <p>The simulation leverages two primary methods: cubic Hermite interpolation and the Fourier series method. The cubic Hermite interpolation ensures that the initial conditions are accurately represented by creating smooth curves between user-defined points. This is crucial for the accurate initialization of the heat and wave equations.</p>
                         <p>The Fourier series method, on the other hand, is used to solve these differential equations. By expressing the solution as a sum of sine functions with coefficients determined by the initial polynomial from the spline interpolation, the program can simulate the evolution of the differential equations over time. This method is particularly effective for capturing the periodic nature of wave and heat distributions.</p>
@@ -167,10 +168,8 @@ private void updateVertices() {
                         <p><strong>A Comprehensive Program UI:</strong> This allows for customizing detailed examples to simulate.</p>
                         <img src="../assets/img/projects/app_ui.webp" alt="Wave Equation with Damping" width="600" height="600" loading="lazy">
                         <p></p>
-                        <h2>Personal Insights and Future Directions</h2>
-                        <p>This project has been an enriching experience, deepening my understanding of differential equations and numerical methods. It was particularly satisfying to finally be able to see theoretical concepts visualized in motion. Future improvements and ideas for this project might include incorporating more complex boundary conditions and optimizing the calculations for better performance.</p>
                         <h2>Conclusion</h2>
-                        <p>This project bridges the theoretical and practical aspects of differential equations, offering an engaging way to visualize and understand its mathematical concepts. For more detailed information and to explore the source code, visit the <a href="https://github.com/papaglory/Heat-Wave-Equation-Simulator/" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                        <p>This project has been an enriching experience, deepening my understanding of differential equations and numerical methods. It was particularly satisfying to finally be able to see theoretical concepts visualized in motion. Future improvements and ideas for this project might include incorporating more complex boundary conditions and optimizing the calculations for better performance.</p>
                     </div>
                 </div>
             </div>
