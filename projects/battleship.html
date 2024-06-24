@@ -8,35 +8,34 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-ZDVNVDZGNG');
     </script>
-    <meta name="description" content="Explore the codebase of the university project that implements the classical board game Battleship."/>
-    <meta name="keywords" content="Marius Naasen, Java, Battleship, game development, board game" />
+    <meta name="description" content="Explore the codebase of the project that automates the decision-making of a battleship using utility AI."/>
+    <meta name="keywords" content="Marius Naasen, AI, utility AI, game development, C#, Unity"/>
     <meta name="author" content="Marius Naasen"/>
-    <title>Battleship - Marius Naasen</title>
+    <title>Battleship Game Implementation - Marius Naasen</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
     <link rel="manifest" href="/assets/favicons/site.webmanifest">
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="aa7f56c4-9008-4fcd-80b2-f3b937120743" data-blockingmode="auto" type="text/javascript" defer></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
     <link href="../css/styles.css" rel="stylesheet"/>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6" defer></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-csharp.min.js" defer></script>
-    <meta property="og:title" content="Battleship - Marius Naasen">
-    <meta property="og:description" content="Explore the codebase of the university project that implements the classical board game Battleship.">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-java.min.js" defer></script>
+    <meta property="og:title" content="Battleship Game Implementation - Marius Naasen">
+    <meta property="og:description" content="Explore the codebase of the project that automates the decision-making of a battleship using utility AI.">
     <meta property="og:image" content="https://mariusnaasen.com/assets/img/cards/battleship_ai-card.webp">
     <meta property="og:url" content="https://mariusnaasen.com">
     <meta property="og:type" content="website">
-    <meta name="twitter:title" content="Battleship - Marius Naasen">
+    <meta name="twitter:title" content="Battleship Game Implementation - Marius Naasen">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Explore the codebase of the university project that implements the classical board game Battleship.">
+    <meta name="twitter:description" content="Explore the codebase of the project that automates the decision-making of a battleship using utility AI.">
     <meta name="twitter:image" content="https://mariusnaasen.com/assets/img/cards/battleship_ai-card.webp">
 </head>
 <body>
@@ -75,8 +74,96 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
-                        <h1>This site is still under construction</h1>
-                        <p>However, feel free to explore the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/Battleship">GitHub repository</a>.</p>
+                        <h1>Battleship Game Implementation</h1>
+                        <p>This project showcases a from-scratch implementation of the classic board game, Battleship, developed during my Bachelor’s studies at UiB. This console-game is a single-player experience against the computer, featuring both the setup phase for placing ships on the board and the gameplay phase where players take turns firing at each other’s boards.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/Battleship">GitHub repository</a>.</p>                        
+                        <h2>Project Structure</h2>
+                        <p>in this section, we will go through the several core components that handle different aspects of the game.</p>
+                        <p>The <code>Game</code> object dictates the flow of the game. It manages the overall game state and interacts with the <code>Board</code> object, which contains information about the game board. The <code>Game</code> object ensures that all game rules are enforced and coordinates the turns between the player and the AI opponent.</p>
+                        <p>The <code>Board</code> object contains all the information about the game board, including methods for placing objects, getting locations, and copying the board. It is responsible for tracking the state of the game grid (board), including the positions of ships and hits/misses during gameplay.</p>
+                        <p><strong>Key Methods in Board Object:</strong></p>
+                        <ul>
+                            <li><code>placeBoardObject</code>: Places ships on the board during the setup phase.</li>
+                            <li><code>getLocation</code>: Retrieves the location at a specific position on the board.</li>
+                            <li><code>copy</code>: Creates a copy of the board to manage game states.</li>
+                        </ul>
+                        <p>The <code>ICompetitor</code> interface defines the actions that any game competitor (player or AI) must implement. This includes setting up their board, taking turns, and handling hits to their ships.</p>
+                        <p><strong>Key Methods in ICompetitor Interface:</strong></p>
+                        <ul>
+                            <li><code>setup</code>: Places ships on the board and initializes health.</li>
+                            <li><code>doTurn</code>: Executes the player's turn, allowing them to attack.</li>
+                            <li><code>getHealth:</code> Returns the current health of the player, indicating how many ship tiles are left.</li>
+                            <li><code>hit</code>: Reduces the health of the player when one of their ship tiles is hit.</li>
+                        </ul>
+                        <h2>Code Snippets</h2>
+                        <h3>Attack Method in Game Class</h3>
+                        <p>Handles the logic for player and AI attacks, checking for hits or misses.</p>
+                        <pre><code class="language-java">
+public void attack(int x, int y, String attacker) {
+    IBoardObject target;
+    if (attacker.equals("player")) {
+        target = aiBoard.getLocation(x, y).getData();
+        if (target.getName().equals("Water")) {
+            System.out.println("Miss!");
+            replaceBoardObject(new Water(), x, y, "attack");
+        } else {
+            System.out.println("Hit!");
+            aiBoard.getLocation(x, y).hit();
+            replaceBoardObject(new HitMarker(), x, y, "attack");
+        }
+    } else if (attacker.equals("ai")) {
+        char xInChar = (char) ('a' + x - 1);
+        System.out.println("The opponent shot at " + xInChar + y);
+        target = playerBoard.getLocation(x, y).getData();
+        if (target.getName().equals("Water")) {
+            System.out.println("Miss!");
+            replaceBoardObject(new Water(), x, y, "player");
+        } else {
+            System.out.println("Hit!");
+            playerBoard.getLocation(x, y).hit();
+            replaceBoardObject(new HitMarker(), x, y, "player");
+        }
+    }
+}
+                        </code></pre>
+                        <h3>Setup Method in Game Class</h3>
+                        <p>This method sets up the game by placing ships for both the player and the AI. It ensures that ships are placed at valid locations and initializes the game state.</p>
+                        <pre><code class="language-java">
+public void setupGame() {
+    // Setup player ships
+    for (String shipType : getShipTemplate()) {
+        boolean placed = false;
+        while (!placed) {
+            System.out.println("Place your " + shipType);
+            String input = sc.nextLine(); // Get user input for ship placement
+            boolean horizontal = (Math.random() < 0.5); // Randomly decide the orientation
+            IBoardObject ship = createBoardObject(shipType); // Create the ship object
+            placed = player.placeShip(playerBoard, input, ship, horizontal); // Attempt to place the ship
+        }
+    }
+
+    // Setup AI ships
+    for (String shipType : getShipTemplate()) {
+        boolean placed = false;
+        while (!placed) {
+            int x = (int) (Math.random() * aiBoard.getWidth());
+            int y = (int) (Math.random() * aiBoard.getHeight());
+            boolean horizontal = (Math.random() < 0.5);
+            IBoardObject ship = createBoardObject(shipType);
+            placed = aiBoard.placeBoardObject(ship, x, y, horizontal);
+        }
+    }
+
+    System.out.println("Game setup complete. Let the battle begin!");
+}
+                        </code></pre>
+                        <h2>Visual Demonstration</h2>
+                        <p>The following visuals illustrate the game's setup and gameplay phases. First, the player places their ships on the board, thereafter, the AI does the same. Next, the player and the AI takes turn attacking.</p>
+                        <img src="../assets/GIFs/battleship/preview.gif" alt="Setup Phase" width="500" height="771" loading="lazy"/>
+                        <p></p>
+                        <h2>Conclusion</h2>
+                        <p>The project demonstrates the core mechanics of the classic Battleship game, with a focus on seamless interaction between the game components. The <code>Game</code> object manages the overall flow, much like a game master, while the <code>Board</code> object tracks the state of the game. With the <code>Player</code> interacting with the board through the game object to place ships, attack, and respond to the AI's moves, there is a harmonious interaction between the game components. By sharing this project, I hope others can find it educational and useful for their own projects.</p>
+
                     </div>
                 </div>
             </div>
