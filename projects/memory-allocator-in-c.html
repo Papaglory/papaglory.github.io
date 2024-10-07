@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDVNVDZGNG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ZDVNVDZGNG');
+    </script>
+    <meta name="description" content="Explore the codebase for the project that implements a simple memory allocator in C."/>
+    <meta name="keywords" content="Marius Naasen, C, memory allocator, memory management, linked list, merge sort"/>
+    <meta name="author" content="Marius Naasen"/>
+    <title>Memory Allocator in C - Marius Naasen</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicons/site.webmanifest">
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="aa7f56c4-9008-4fcd-80b2-f3b937120743" data-blockingmode="auto" type="text/javascript" defer></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+    <link href="../css/styles.css" rel="stylesheet"/>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-c.min.js" defer></script>
+    <meta property="og:title" content="Memory Allocator in C - Marius Naasen">
+    <meta property="og:description" content="Explore the codebase for the project that implements a simple memory allocator in C.">
+    <meta property="og:image" content="https://mariusnaasen.com/assets/img/cards/allocator_ai-card.webp">
+    <meta property="og:url" content="https://mariusnaasen.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:title" content="Memory Allocator in C - Marius Naasen">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Explore the codebase for the project that implements a simple memory allocator in C.">
+    <meta name="twitter:image" content="https://mariusnaasen.com/assets/img/cards/allocator_ai-card.webp">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html">
+            <img src="../assets/img/background/portrait.webp" alt="Profile picture of Marius Naasen">
+            Marius Naasen
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../projects.html">Projects</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="header-mystory-container" style="background-color: white;">
+    <header class="masthead" style="background-image: url('../assets/img/projects/allocator_ai.webp')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading text-center">
+                        <img src="../assets/img/background/portrait.webp" alt="Portrait of Marius Naasen" class="profile-photo mb-3 invisible-text">
+                        <span class="subheading invisible-text">Hi, I am Marius</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>Custom Memory Allocator in C</h1>
+                        <p>This project is my introductory dive into manual memory management, something I had no prior experience with. Having previously worked with languages that use garbage collectors, managing memory and working with pointers were entirely new concepts for me. This project showcases my attempt to understand these concepts and implement a memory allocator inspired by C's built-in allocator.</p>
+                        <p>The allocator is designed to handle dynamic memory requests from the program and manage memory efficiently. By tracking memory blocks through a linked list, the allocator can dynamically allocate, free, and reallocate memory while minimizing fragmentation.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/Memory-Allocator-in-C" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                        <h2>Project Overview</h2>
+                        <p>The memory allocator is designed to manage a single large pool of memory, dividing it into blocks as needed by the program. It dynamically allocates, frees, and reallocates memory by implementing C's well-known functions: <code>malloc</code>, <code>free</code> and <code>realloc</code>. To organize the memory, a linked list is used to track both free and used blocks.</p>
+                        <p>In the subsequent sections we will inspect the key components of the allocator, including how it utilizes the memory for organizing metadata, how linked lists are used to track memory blocks, and interesting code snippets from the codebase.</p>
+                        <h2>Key Components</h2>
+                        <p>The project is structured around several core components.</p>
+                        <ul>
+                            <li><strong>Allocator Object (<code>Allocator</code>):</strong> The allocator source file contains key function implementations, such as <code>allocator_malloc</code>, <code>allocator_free</code>, and <code>allocator_realloc</code>, along with important auxiliary functions that ensure the allocator works properly. In <code>create_allocator</code>, there is a single call to C's <code>malloc</code> to obtain the initial memory pool that the allocator will manage. This pool is then divided into two parts: a user pool and a reserved pool.
+                            <p>The user pool contains blocks of allocated data, while the reserved pool holds metadata related to the allocator, such as the linked list, nodes, and member variables. Inspired by the heap-stack relationship, the reserved pool grows downwards, and the user pool grows upwards.</p>
+                            </li>
+                            <li><strong>Linked List for Memory Blocks (<code>LinkedList</code>):</strong> A linked list is utilized to keep track of memory blocks that are free or in use within the user pool.
+                            <p>During allocator creation, the linked list instantiates a single node, which contains the entire user pool set to free. When the <code>allocator_malloc</code> function is called, depending on the search strategy, the allocator will go through the linked list to find a node with an available memory block. If found, it will split the node into two: one containing the allocated memory block, and the other containing the remaining free memory.</p>
+                            </li>
+                            <li><strong>Data Object (<code>MemoryData</code>):</strong> Since the node implementation is generic, the payload of a node is a <code>MemoryData</code> object. This object contains all the necessary information about the memory block the node holds, such as the start address of the memory block, its size, and whether it is free or allocated.
+                            </li><br>
+                            <li><strong>Static Variable (<code>current_alloc</code>):</strong> To avoid the need to pass a pointer to the allocator object as an argument when using the allocator functions, the static variable <code>current_alloc</code> is used instead. By using the <code>set_allocator</code> and <code>release_allocator</code> functions, any allocator function that requires the allocator object can retrieve it from <code>current_alloc</code>.
+                            </li>
+                        </ul>
+                        <h2>Code Overview</h2>
+                        <p>In this section, we will highlight essential parts of the code that make up the memory allocator.</p>
+                        <h3><code>create_allocator.c</code> Script</h3>
+                        <p>The <code>create_allocator</code> function is responsible for initializing the allocator, allocating the heap, and setting up the initial metadata. To set up the metadata, we must be diligent as we deal with pointer arithmetic. As previously mentioned, the reserved pool grows downward, starting from the highest memory. This is reflected in the following pseudocode of the <code>create_allocator</code> function. When we instantiate an object in the reserved pool, we first have to make room for it by increasing the size of the reserved pool.</p>
+                        <p>The <code>align_size</code> function is simply turning the integer value into a multiple of eight to accommodate best practices in 64-bit systems, which organize memory in blocks of eight.</p>
+                        <pre><code class="language-c">Allocator* create_allocator(size_t heap_size) {
+    // Realign to a factor of 8 for memory efficency
+    heap_size = align_size(heap_size);
+
+    // Utilize the built-in C malloc to acquire the managed heap
+    char* heap_start = (char*) malloc(heap_size);
+    if (heap_start == NULL) {
+        // Memory error from malloc()
+        return NULL;
+    }
+
+    // Initialize Allocator object at the end of the heap
+    char* heap_end = heap_start + heap_size;
+    Allocator* alloc = (Allocator*) (heap_end - align_size(sizeof(Allocator)));
+
+    // Set Allocator member variables (pseudocode)
+    // alloc->member_variable = ...;
+
+    // Increase the reserved pool to accommodate for the LinkedList
+    alloc->reserved_pool_border -= align_size(sizeof(LinkedList));
+    alloc->reserved_pool_size += align_size(sizeof(LinkedList));
+
+    // Initialize LinkedList object
+    LinkedList* list = (LinkedList*) alloc->reserved_pool_border;
+
+    // Set LinkedList member variables (pseudocode)
+    // list->head = ...;
+
+    // Set Allocator member variable
+    alloc->list = list;
+
+    // Initialize a Node referencing the entire user memory pool
+    void* memory_start = heap_start;
+
+    // Increase the reserved pool to accommodate for the MemoryData
+    alloc->reserved_pool_border -= align_size(sizeof(MemoryData));
+    alloc->reserved_pool_size += align_size(sizeof(MemoryData));
+
+    MemoryData* data = (MemoryData*) alloc->reserved_pool_border;
+
+    // Set MemoryData member variables (pseudocode)
+    // data->member_variable = ...;
+
+    // Increase the reserved pool to accommodate for the Node
+    alloc->reserved_pool_border -= align_size(sizeof(Node));
+    alloc->reserved_pool_size += align_size(sizeof(Node));
+
+    // Create Node containing the MemoryData
+    Node* node = (Node*) alloc->reserved_pool_border;
+
+    // Set Node member variables (pseudocode)
+    // node->member_variable = ...;
+
+    /*
+     * The Node is a generic structure that can carry different types of data.
+     * In this line, we set the payload of the Node to the previously created
+     * MemoryData, which stores information about the memory block.
+     */
+    node->data = data;
+
+
+    // Add the newly created Node to the LinkedList
+    add(list, node);
+
+    return alloc;
+}
+                        </code></pre>
+                        <h3><code>allocator_malloc.c</code> Script</h3>
+                        <p>The <code>allocator_malloc</code> function can be considered as having two parts. The first is concerned with finding a node that has an available memory block. Multiple search strategies are available, such as first-fit, best-fit, and next-fit. Once a suitable node has been found, we enter the second part. Here, we determine how to utilize the found node. In the implementation, if the block is larger than needed, it is split. The block is divided, allocating the required portion and leaving the remainder as a free block.</p>
+                        <p>The following is the pseudocode for the <code>allocator_malloc</code> function.</p>
+                        <pre><code class="language-c">void* allocator_malloc(size_t required_size) {
+    // Realign to a factor of 8 for memory efficency
+    required_size = align_size(required_size);
+
+    // Search for a Node with an available memory block
+    Node* available_node = naive_search(required_size);
+
+    if (available_node == NULL) {
+        /*
+         * No available Node was found, perform memory
+         * pool cleansing (reduce fragmentation, remove unused metadata).
+         */
+        cleanse_user_pool();
+        cleanse_reserved_pool();
+
+        // Try again to find an available memory block
+        available_node = naive_search(required_size);
+
+        if (available_node == NULL) {
+            // The managed heap is full
+            return NULL;
+        }
+    }
+
+    /*
+     * A Node has been found. Inspect the Node to see how to split
+     * up into allocated memory Node and residual memory Node.
+     */
+
+    // Retrieve Node memory block data
+    MemoryData* available_data = (MemoryData*) available_node->data;
+    size_t node_block_size = available_data->block_size;
+
+    /* 
+    * Logic for splitting up the Node into allocated memory
+    * and residual memory Nodes (pseudocode).
+    */
+    // ...
+
+    // Return the pointer to the start of the allocated memory
+    return available_data->memory_start;
+}
+                        </code></pre>
+                        <h3><code>allocator_free.c</code> Script</h3>
+                        <p>Similar to the <code>allocator_malloc</code> function, the <code>allocator_free</code> function consists of two parts. Firstly, it verifies that the input pointer <code>ptr</code> was previously allocated by the allocator. Thereafter, if a corresponding node is found, the function marks it as free and tries to merge the node with adjacent nodes that are also free in order to reduce memory fragmentation.</p>
+                        <p>The following is the pseudocode for the <code>allocator_malloc</code> function.</p>
+                        <pre><code class="language-c">void allocator_free(void* ptr) {
+    if (current_alloc == NULL) {
+        // There is no Allocator object to process
+        return;
+    }
+
+    LinkedList* list = current_alloc->list;
+    LinkedListIterator iter;
+    iter.current = get_head(list);
+
+    // Search for the Node corresponding to 'ptr' in the LinkedList
+    Node* matched_node = NULL;
+    while (has_next(&iter)) {
+        Node* node = next(&iter);
+        MemoryData* data = (MemoryData*) node->data;
+
+        if (data->memory_start == ptr && !data->is_free) {
+            matched_node = node;  // Node found
+            break;
+        }
+    }
+
+    if (!matched_node) {
+        // The Allocator did not allocate this pointer
+        return;
+    }
+
+    // Mark the memory block as free
+    MemoryData* matched_data = (MemoryData*) matched_node->data;
+    matched_data->is_free = true;
+
+    // Reset the iterator to look for adjacent free Nodes
+    iter.current = get_head(list);
+    while (has_next(&iter)) {
+        Node* node = next(&iter);
+
+        // Skip if its the matched Node itself
+        if (node->id == matched_node->id) { continue; }
+
+        MemoryData* data = (MemoryData*) node->data;
+
+        /*
+         * Check if the Node is adjacent to the freed memory block,
+         * and if it is free, merge the Nodes (pseudocode).
+         */
+        if (data->is_free && is_adjacent(matched_data, data)) {
+            merge_meta_data_nodes(list, matched_node, node);
+
+            // Update the matched Node and memory boundaries (pseudocode)
+            // matched_memory_start = ...;
+            // matched_memory_end = ...;
+        }
+    }
+}
+
+                        </code></pre>
+                        <h2>Conclusion</h2>
+                        <p>This project serves as a starting point for exploring concepts such as manual memory management, pointer manipulation, and the structure of a simple memory allocator. In creating efficient allocators, the process can be viewed as a game of placement: how can we place allocated data most efficiently, with the constraint that once placed, it cannot be moved, only freed when no longer needed. Memory allocators focus on two important aspects: designing good search strategies, with the simplest being the naive first-fit search, and creating a solid allocator design that allows for efficient defragmentation. In this project, we touched on both aspects, making it a valuable entry point into memory allocation.</p>
+                        <p>Future improvements could include developing a more specialized linked list and node structure, rather than relying on generic implementations. We could also use system calls like mmap, which would allow us to completely disengage from C's built-in allocator, giving us full control. Furthermore, implementing segregated linked lists, where free nodes and nodes in use are kept in separate lists could further improve efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="border-top">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/profile.php?id=100010585878716", alt="Visit my Facebook profile">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Papaglory" alt="Visit my GitHub profile">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="small text-center text-muted fst-italic">&copy; Marius Naasen 2024. All rights reserved.<br>Built with <a target="_blank" href="https://startbootstrap.com" rel="noopener">Start Bootstrap.</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../js/scripts.js" defer></script>
+</body>
+</html>
