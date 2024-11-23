@@ -78,6 +78,16 @@
                         <p>After taking a university course on <a target="_blank" rel="noopener" href="https://www4.uib.no/emner/MAT131">differential equations</a>, I found myself fascinated by the heat and wave equations we studied in the final chapters. Despite the comprehensive coverage of the subject, there was a lack of dynamic visualizations that could bring these equations to life. This inspired me to create the "Heat-Wave-Equation-Simulator" project to visualize the behavior of these equations over time.</p>
                         <p>The project I developed is a numerical solver and visualizer for three types of differential equations: the heat equation, the wave equation, and the wave equation with damping. By considering the case with one spatial variable, the program creates a Hermite spline interpolation from user-inputted vertices, models the numerical solution, and visualizes the results using Fourier series coefficients.</p>
                         <p>For more information and to explore the source code, please refer to the <a href="https://github.com/papaglory/Heat-Wave-Equation-Simulator/" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/GIFs/heat-wave-equation-simulator/heat.gif" alt="A GIF showcasing the diffusion of temperature over a medium" loading="lazy">
+                            <p><strong>Heat Equation:</strong> Visualizing how the temperature diffuses over time within a medium. The horizontal dimension represents the position within the medium, while the vertical axis represents the temperature. The blue graph depicts the temperature distribution across the medium at each moment in time.</p>
+                            <img class="article-img" src="../assets/GIFs/heat-wave-equation-simulator/wave.gif" alt="A GIF showcasing waves over a medium" loading="lazy">
+                            <p><strong>Wave Equation:</strong> Visualizing how oscillations travel through a medium over time. The horizontal axis represents the position along the medium, while the vertical axis shows the displacement at each point. The blue graph illustrates how the medium moves in response to the wave as it propagates through.</p>
+                            <img class="article-img" src="../assets/GIFs/heat-wave-equation-simulator/wavedamp.gif" alt="A GIF showcasing waves being damped over a medium" loading="lazy">
+                            <p><strong>Wave Equation with Damping:</strong> Visualizing how oscillations travel through a medium over time with the additon of the dampening (diffusion) effect from the heat equation. The horizontal axis represents the position along the medium, while the vertical axis shows the displacement at each point. The blue graph illustrates how the medium moves in response to the wave as it propagates through.</p>
+                            <img class="article-img" src="../assets/img/projects/app_ui.webp" alt="Wave Equation with Damping" loading="lazy">
+                            <p><strong>A Comprehensive Program UI:</strong> Allows for creating and customizing detailed examples.</p>
+                        </div>
                         <h2>How It Works</h2>
                         <p>The simulation leverages two primary methods: cubic Hermite interpolation and the Fourier series method. The cubic Hermite interpolation ensures that the initial conditions are accurately represented by creating smooth curves between user-defined points. This is crucial for the accurate initialization of the heat and wave equations.</p>
                         <p>The Fourier series method, on the other hand, is used to solve these differential equations. By expressing the solution as a sum of sine functions with coefficients determined by the initial polynomial from the spline interpolation, the program can simulate the evolution of the differential equations over time. This method is particularly effective for capturing the periodic nature of wave and heat distributions.</p>
@@ -157,17 +167,6 @@ private void updateVertices() {
     m_vertices = temp;
 }
                         </code></pre>
-                        <p></p>
-                        <h2>Visual Demonstrations</h2>
-                        <p><strong>Heat Equation:</strong> Visualizing heat distribution over time.</p>
-                        <img src="../assets/GIFs/heat-wave-equation-simulator/heat.gif" alt="A GIF showcasing the diffusion of temperature over a medium" width="700" height="400" loading="lazy">
-                        <p><strong>Wave Equation:</strong> Observing wave propagation over time.</p>
-                        <img src="../assets/GIFs/heat-wave-equation-simulator/wave.gif" alt="A GIF showcasing waves over a medium" width="700" height="400" loading="lazy">
-                        <p><strong>Wave Equation with Damping:</strong> Seeing how damping influences wave behavior.</p>
-                        <img src="../assets/GIFs/heat-wave-equation-simulator/wavedamp.gif" alt="A GIF showcasing waves being damped over a medium" width="700" height="400" loading="lazy">
-                        <p><strong>A Comprehensive Program UI:</strong> This allows for customizing detailed examples to simulate.</p>
-                        <img src="../assets/img/projects/app_ui.webp" alt="Wave Equation with Damping" width="600" height="600" loading="lazy">
-                        <p></p>
                         <h2>Conclusion</h2>
                         <p>This project has been an enriching experience, deepening my understanding of differential equations and numerical methods. It was particularly satisfying to finally be able to see theoretical concepts visualized in motion. Future improvements and ideas for this project might include incorporating more complex boundary conditions and optimizing the calculations for better performance.</p>
                     </div>

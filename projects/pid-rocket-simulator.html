@@ -78,6 +78,12 @@
                         <p>Welcome to my rocket simulation project. This project aims to show how rockets can stay stable and land precisely using a PID (Proportional-Integral-Derivative) controller within a simulated 3D environment. The entire simulation is built in the Unity game engine.</p>
                         <p>As hinted by the the image banner of this page, the inspiration of this project comes from the simultaneous landing of SpaceX's dual side boosters in 2018. The precision of their synchronized touchdown was awe-inspiring and sparked my interest in looking into rocket control systems. This project is my attempt to replicate that level of precision in a simulated environment.</p>
                         <p>For the codebase of this project along with a Unity build, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/PID-Rocket-Simulator">GitHub repository</a>. Please note that the code for this project is poorly written and lacks sufficient comments. It has not been rewritten or refactored to adhere to standard coding practices. Therefore, we recommend using the concepts and ideas presented rather than relying on the code itself.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/GIFs/pid-rocket-simulator/maneuverability.gif" alt="A GIF showcasing the maneuverability of the rocket" loading="lazy">
+                            <p><strong>Maneuverability:</strong> The rocket smoothly moves to the target location exercising precise movement.</p>
+                            <img class="article-img" src="../assets/GIFs/pid-rocket-simulator/descent.gif" alt="A GIF showcasing the descent and landing of the rocket" loading="lazy">
+                            <p><strong>Controlled Descent:</strong> The rocket performs a precise ‘suicide burn’ landing.</p>
+                        </div>
                         <h2>Project Overview</h2>
                         <p>This project involves controlling a rocket in a 3D simulation using a PID controller. The controller manages the rocket's stability, rotation, and movement towards a target location. For this project we have two key features:</p>
                         <ul>
@@ -251,19 +257,13 @@ public void ApplyRotation(float sideThrust)
         this.transform.Rotate(-Vector3.right * sideThrust * rotationPower * Time.fixedDeltaTime, Space.Self);
     }
 }
-                        </code></pre>
+                        </code></pre> <p></p>
                         <h2>Challenges</h2>
-                        <p>Two parts when working on this project proved themselves more challenging than expected:</p>
+                        <p>When working on this project, two parts proved themselves more challenging than expected.</p>
                         <ul>
                             <li><strong>Creating the First PID Controller Prototype:</strong> Finding information specifically on applying PID controllers in Unity for flying systems was difficult. This led to a lot of experimenting from scratch and without relying heavily on online sources.</li>
                             <li><strong>Transitioning from One-Dimensional to Three-Dimensional Control:</strong> Moving from controlling a single variable (\(y\)) to managing all three dimensions with rotation controllers was a significant challenge as this complicated the parameter tuning to cover a wider variety of scenarios.</li>
                         </ul>
-                        <h2>Visual Demonstrations</h2>
-                        <p><strong>Maneuverability:</strong> The rocket smoothly moves to the target location exercising precise movement.</p>
-                        <img src="../assets/GIFs/pid-rocket-simulator/maneuverability.gif" alt="A GIF showcasing the maneuverability of the rocket" width="700" height="450" loading="lazy">
-                        <p><strong>Controlled Descent:</strong> The rocket performs a precise ‘suicide burn’ landing.</p>
-                        <img src="../assets/GIFs/pid-rocket-simulator/descent.gif" alt="A GIF showcasing the descent and landing of the rocket" width="700" height="450" loading="lazy">
-                        <p></p>
                         <h2>Conclusion</h2>
                         <p>Working on this project provided valuable insights into the inner workings of PID controllers and how to best leverage the Unity engine. If I were to revisit this project, I might explore using different sensors or more advanced control algorithms to further enhance the rocket's performance. Feel free to examine the code and try the simulation yourself.</p>
                     </div>
