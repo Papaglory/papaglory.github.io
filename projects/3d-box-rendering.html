@@ -77,6 +77,10 @@
                         <h1>Visualization of a 3D Box</h1>
                         <p>After taking a course in <a target="_blank" rel="noopener" href="https://www4.uib.no/emner/MAT121">linear algebra</a> during my bachelor studies, I was curious about how we can leverage linear algebra for computer graphics. There was a small section in the course about this, but we never went deeper into it. So I decided to try it on my own.</p>
                         <p>For the codebase of this project along with three Unity demo builds, please refer to the <a target="_blank" rel="noopener" href="https://github.com/Papaglory/3D-Box-Rendering">GitHub repository</a>.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/GIFs/3d-box-rendering/box.gif" alt="A GIF of a rotating 3D box" loading="lazy">
+                            <p><strong>Off-Diagonal Rotation:</strong> Illustrates rotation when an off-diagonal matrix that consists of rotation in all three dimension axis is applied to the box.</p>
+                        </div>
                         <h2>Project Overview</h2>
                         <p>This project involves my implementation of rendering a box in 3D space using linear algebra. Through demonstrations and reviews of important code snippets, we will explore how to apply rotation matrices to a box to visualize its rotation in a virtual environment.</p>
                         <p>The core of this project involves the following.</p>
@@ -270,10 +274,6 @@ public class Matrix {
     }
 }
                         </code></pre>
-                        <h2>Visual Demonstration</h2>
-                        <p>The following is a demonstration of the box as it spins around its \(y\) axis.</p>
-                        <img src="../assets/GIFs/3d-box-rendering/box.gif" alt="A GIF of a rotating 3D box" width="600" height="600" loading="lazy">
-                        <p></p>
                         <h2>Conclusion</h2>
                         <p>This project provided insights into the application of linear algebra in computer graphics. By representing a 3D box and using rotation matrices, we can visualize dynamic rotations and transformations, demonstrating the practical use of mathematical concepts in programming.</p>
                     </div>

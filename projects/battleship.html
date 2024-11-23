@@ -75,9 +75,13 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
                         <h1>Battleship Game Implementation</h1>
-                        <p>This project showcases a from-scratch implementation of the classic board game, Battleship, developed during my Bachelor’s studies at UiB. This console-game is a single-player experience against the computer, featuring both the setup phase for placing ships on the board and the gameplay phase where players take turns firing at each other’s boards.</p>
-                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/Battleship" target="_blank" rel="noopener">GitHub repository</a>.</p>                        
-                        <h2>Project Structure</h2>
+                        <p>This project showcases a from-scratch implementation of the classic board game, Battleship, developed during my Bachelor’s studies at the University of Bergen. This console-game is a single-player experience against the computer, featuring both the setup phase for placing ships on the board and the gameplay phase where players take turns firing at each other’s boards.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/Battleship" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/GIFs/battleship/preview.gif" alt="Setup Phase" loading="lazy"/>
+                            <p><strong>Setup and Gameplay phases:</strong> In the setup phase, the player places their ships on the board, thereafter, the AI places the ships. In the gameplay phase, the player and the AI takes turn attacking.</p>
+                        </div>                 
+                        <h2>Project Overview</h2>
                         <p>in this section, we will go through the several core components that handle different aspects of the game.</p>
                         <p>The <code>Game</code> object dictates the flow of the game. It manages the overall game state and interacts with the <code>Board</code> object, which contains information about the game board. The <code>Game</code> object ensures that all game rules are enforced and coordinates the turns between the player and the AI opponent.</p>
                         <p>The <code>Board</code> object contains all the information about the game board, including methods for placing objects, getting locations, and copying the board. It is responsible for tracking the state of the game grid (board), including the positions of ships and hits/misses during gameplay.</p>
@@ -157,10 +161,6 @@ public void setupGame() {
     System.out.println("Game setup complete. Let the battle begin!");
 }
                         </code></pre>
-                        <h2>Visual Demonstration</h2>
-                        <p>The following visuals illustrate the game's setup and gameplay phases. First, the player places their ships on the board, thereafter, the AI does the same. Next, the player and the AI takes turn attacking.</p>
-                        <img src="../assets/GIFs/battleship/preview.gif" alt="Setup Phase" width="500" height="771" loading="lazy"/>
-                        <p></p>
                         <h2>Conclusion</h2>
                         <p>The project demonstrates the core mechanics of the classic Battleship game, with a focus on seamless interaction between the game components. The <code>Game</code> object manages the overall flow, much like a game master, while the <code>Board</code> object tracks the state of the game. With the <code>Player</code> interacting with the board through the game object to place ships, attack, and respond to the AI's moves, there is a harmonious interaction between the game components. By sharing this project, I hope others can find it educational and useful for their own projects.</p>
 

@@ -10927,3 +10927,33 @@ header.masthead .post-heading .meta a {
 .invisible-text {
   visibility: hidden;
 }
+
+/*
+* Automatic scaling for images and gifs used in articles
+*/
+.article-img {
+  max-width: 1000px;
+  max-height: 70vh;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.article-img-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.article-img-container p {
+  color: var(--bs-gray-700);
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  font-style: italic;
+  text-align: center;
+}
