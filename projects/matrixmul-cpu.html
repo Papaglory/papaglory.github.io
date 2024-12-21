@@ -103,7 +103,7 @@
                         <h3>1.1 Verification Framework</h3>
                         <p>To rigorously perform the experiments, a verification framework was first established to ensure the correctness of the algorithms. To guarantee a floating-point accuracy comparable to that of OpenBLAS, the following constraints were set in place.</p>
                         <ul>
-                            <li><code>VALUES_MIN</code> <code>-1e+6</code>: Chosen to ensure values are within a safe range, minimzing the likelihood of floating-point round-off errors during computations.</li>
+                            <li><code>VALUES_MIN</code> <code>-1e+6</code>: Chosen to ensure values are within a safe range, minimizing the likelihood of floating-point round-off errors during computations.</li>
                             <li><code>VALUES_MAX</code> <code>1e+6</code>: The upper bound for element values in the matrices, complementing <code>VALUES_MIN</code> to establish a safe range.</li>
                             <li><code>DIMENSION_SIZE</code> <code>3000 x 3000</code>: A size to balance being computationally feasible for the system and large enough to evaluate the performance of the algorithms on sizable matrices.
                             </li>
@@ -214,7 +214,7 @@
                             <img class="article-img" src="../assets/img/matrixmul-CPU/competing_algorithms_execution_time_heatmap.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
                             <p><strong>Execution Time Heatmap:</strong> Displays average execution time (seconds) with respect to matrix dimensions and competing algorithms: <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code>.</p>
                         </div>
-                        <p>For \(\delta=50\), \(\delta=100\) and \(\delta=200\), we observe that <code>MULTITHREAD_3AVX</code> has a slightly lower mean. For the higher dimensions, <code>MULTITHREAD_9AVX</code> has the lowest mean, with the largest difference occuring at \(\delta=2000\). To determine whether these differences in mean time are statistically significant, we apply Welch's two sided t-test with a Bonferroni correction of the alpha to reduce the risk of type I errors (false positives).</p>
+                        <p>For \(\delta=50\), \(\delta=100\) and \(\delta=200\), we observe that <code>MULTITHREAD_3AVX</code> has a slightly lower mean. For the higher dimensions, <code>MULTITHREAD_9AVX</code> has the lowest mean, with the largest difference occurring at \(\delta=2000\). To determine whether these differences in mean time are statistically significant, we apply Welch's two sided t-test with a Bonferroni correction of the alpha to reduce the risk of type I errors (false positives).</p>
                         <div class="article-img-container">
                             <img class="article-img" src="../assets/img/matrixmul-CPU/competing_algorithms_welch.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
                             <p><strong>Welch's t-test Rejection Bar Plot:</strong> Illustrates p-values and null hypothesis rejections for competing algorithms: <code>MULTITHREAD_3AVX</code>, <code>MULTITHREAD_9AVX</code>. Each bar displays the p-value corresponding to each dimension. The red dotted line represents the adjusted alpha significant threshold (Bonferroni correction). If the null hypothesis is rejected, a brown colored bar indicates the mean execution time for <code>MULTITHREAD_9AVX</code> is smaller.</p>
@@ -291,7 +291,7 @@ void matrix_mult_naive(Matrix* A, Matrix* B, Matrix* C) {
                         </ul>
                         <h3>2.2 Blocking / Tiling Method - <code>SINGLETHREAD</code></h3>
                         <p>The algorithm extending <code>NAIVE</code> by incorporating the blocking method and pre-transposing matrix \(B\) is referred to as <code>SINGLETHREAD</code>. The blocking method improves cache utilization by dividing the matrices into smaller submatrices (blocks) that fit into the CPU cache and be processed independently. For each block in \(C\), the corresponding rows of matrix \(A\) and columns of matrix \(B\) are partitioned into smaller blocks, which are then loaded into the CPU cache for efficient computation.</p>
-                        <p>Transposing matrix \(B\), as mention in the previous section turns column-wise access into row-wise access, thus accessing contiguous data in memory.</p>
+                        <p>Transposing matrix \(B\), as mentioned in the previous section turns column-wise access into row-wise access, thus accessing contiguous data in memory.</p>
                         <p>The following is pseudocode for <code>SINGLETHREAD</code>. In the original code, loop unrolling is applied to further optimize performance along with variables containing precomputed values. This is not present in the pseudocode to maintain simplicity.</p>
                         <pre><code class="language-c">
 void matrix_singlethread_mult(Matrix* A, Matrix* B, Matrix* C, size_t block_size) {
