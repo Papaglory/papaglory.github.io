@@ -74,7 +74,481 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 custom-text-width">
+                        <h1>Optimized Matrix Multiplication Algorithm in C</h1>
+                        <p>My first project in learning C focused on creating a <a href="https://mariusnaasen.com/projects/memory-allocator-in-c" target="_blank" rel="noopener">custom memory allocator</a>. To further build on my understanding, I chose to implement an optimized matrix multiplication algorithm, further exploring low-level programming, and also learning about multithreading and SIMD vectorization. Matrix multiplication is an ideal choice because it relies on well-written low-level code to optimize memory layout and CPU cache utilization. Additionally, matrix multiplication can be divided into independent sub-tasks which allows for efficient parallelization through multithreading and vectorization.</p>
+                        <p>This project is divided into two parts: an experimental main section and a theoretical appendix. In the experimental part, the focus is on benchmarking various matrix multiplication algorithms and analyzing their performance. Additional emphasis is put on my two top-competing algorithms to determine which is better. Thereafter, all algorithms are compared, including OpenBLAS, an industry-standard library. The theoretical appendix provides explanations of the algorithms developed, starting with the naive implementation and progressively incorporating ideas and concepts such as blocking / tiling, multithreading with POSIX threads, and SIMD vectorization, utilizing the AVX registers on the CPU.</p>
+                        <p>As this is a project focused on the iterative process of optimizing the runtime performance of algorithms, less emphasis has been placed on ensuring that the floating-point accuracy is identical to that of OpenBLAS for all matrix dimensions and element values. Instead, this project operates within well-defined constraints to ensure accuracy within threshold values to that of OpenBLAS. While this approach does not guarantee identical accuracy for all scenarios, it allows for optimization and meaningful comparisons within this framework.</p>
+                        <p>For more information and to explore the codebase, please refer to the <a href="https://github.com/Papaglory/MatrixMul-CPU" target="_blank" rel="noopener">GitHub repository</a>.</p>
+                        <h2>Project Overview</h2>
+                        <p>As mentioned in the introduction, this project is divided into two parts: an experimental section, where benchmarking and analysis are the focus, and a theoretical appendix, which provides detailed explanations of the matrix multiplication algorithms developed, including naive, blocking, multithreading and AVX-optimized implementations. For future reference, each name for the algorithms developed is included in the section titles of the appendix, as outlined below in the Theoretical Background Overview. This way, readers can find detailed explanations of each algorithm when they encounter these names later in the experiments section.</p>
                         
+                        <h3>Experiments Overview</h3>
+                        <ol>
+                            <li><strong>Benchmarking Framework and Methodology:</strong> Discuss the assumptions and benchmarking framework used to ensure consistency and experimental rigor in the analysis.</li>
+                            <li><strong>Verification Framework:</strong> Highlight the framework to test the correctness of the algorithms to that of OpenBLAS.</li>
+                            <li><strong>Data Collection Approach:</strong> Discuss the general framework used for data collection and benchmarking of the implemented algorithms, along with compiler optimization flags.</li>
+                            <li><strong>Blocking Size Optimization for Competing Algorithms:</strong> Determine the optimal blocking size for the two top-performing algorithms.</li>
+                            <li><strong>Selection of the Best Algorithm:</strong> Statistical methods are applied to benchmark data to identify the best-performing algorithm based on mean execution time.</li>
+                            <li><strong>Benchmarking Algorithms:</strong> Benchmarks are conducted on all implemented algorithms, with OpenBLAS serving as the industry standard for insight.</li>
+                        </ol>
+                        <h3>Theoretical Background Overview (Appendix)</h3>
+                        <ol>
+                            <li><strong>Naive Matrix Multiplication Algorithm - <code>NAIVE</code>:</strong> To establish a foundational understanding of the problem, we begin with the simplest implementation of matrix multiplication. This serves as a baseline for performance and for later algorithms to build upon.</li>
+                            <li><strong>Blocking / Tiling Method - <code>SINGLETHREAD</code>:</strong> Implement the blocking (tiling) method and explore its advantages, and how it improves algorithm efficiency by optimizing memory access patterns.</li>
+                            <li><strong>Multithreading - <code>MULTITHREAD</code>:</strong> Multithreading fundamentals are applied to refactor the algorithm, utilizing parallelism to maximize CPU utilization.</li>
+                            <li><strong>SIMD Vectorization - <code>MULTITHREAD_3AVX</code>, <code>MULTITHREAD_9AVX</code>:</strong> Integrate AVX (Advanced Vector Extensions) to enable vectorized operations, enhancing computational efficiency.</li>
+                        </ol> 
+                        <h2>1. Experiments</h2>
+                        <p>This section provides an in-depth analysis of the experiments and the performance of the implemented algorithms. The results highlight the performance improvements achieved with each optimization step and compare them against the industry standard, represented by OpenBLAS.</p>
+                        <h3>1.1 Verification Framework</h3>
+                        <p>To rigorously perform the experiments, a verification framework was first established to ensure the correctness of the algorithms. To guarantee a floating-point accuracy comparable to that of OpenBLAS, the following constraints were set in place.</p>
+                        <ul>
+                            <li><code>VALUES_MIN</code> <code>-1e+6</code>: Chosen to ensure values are within a safe range, minimzing the likelihood of floating-point round-off errors during computations.</li>
+                            <li><code>VALUES_MAX</code> <code>1e+6</code>: The upper bound for element values in the matrices, complementing <code>VALUES_MIN</code> to establish a safe range.</li>
+                            <li><code>DIMENSION_SIZE</code> <code>3000 x 3000</code>: A size to balance being computationally feasible for the system and large enough to evaluate the performance of the algorithms on sizable matrices.
+                            </li>
+                            <li><code>APPROXIMATION_THRESHOLD</code> <code>1e-9</code>: Ensures that the floating-point accuracy of the created algorithms remains comparable to that of OpenBLAS.</li>
+                        </ul>
+                        <p>A matrix dimension of <code>3000 x 3000</code> was used to have an upper bound for the algorithms during benchmarking It is assumed that smaller square matrices of this size will have comparable floating-point accuracy, as they involve fewer multiplications, reducing the likelihood of floating-point precision loss and round-off errors.</p>
+                        <p>For more about verification and correctness, please refer to the source files.</p>
+                        <ul>
+                            <li><code>matrix_mult_naive_verification.c</code></li>
+                            <li><code>matrix_mult_single_verification.c</code></li>
+                            <li><code>matrix_mult_multi_verification.c</code></li>
+                        </ul>
+                        <h4>1.2 Data Collection Approach</h4>
+                        <p>The data collection when performing the experiments is handled in the bash script, <code>run_benchmark.sh</code>. The <code>run_benchmark.sh</code> script automates the benchmarking collection for the algorithms and places the result in <code>benchmark_results.csv</code>. The bash script handles the following.</p>
+                        <ol>
+                            <li><strong>Warm-Up Runs:</strong> Before collecting data, the script performs warm-up runs to stabilize the system's runtime behavior and ensure consistent CPU cache states to ensure fairness in the comparison.</li>
+                            <li><strong>Multiple Benchmark Runs:</strong> Each algorithm is benchmarked across multiple matrix dimensions:
+                                <ul>
+                                    <li><code>50 x 50</code></li>
+                                    <li><code>100 x 100</code></li>
+                                    <li><code>200 x 200</code></li>
+                                    <li><code>500 x 500</code></li>
+                                    <li><code>750 x 750</code></li>
+                                    <li><code>1000 x 1000</code></li>
+                                    <li><code>1500 x 1500</code></li>
+                                    <li><code>2000 x 2000</code></li>
+                                </ul>
+                                For each configuration, the script performs <code>NUM_RUNS=50</code> independent runs. This allows for accurate averages and variances in performance metrics.
+                            </li>
+                            <li><strong>Performance Metrics Collection:</strong> The script uses the Linux <code>perf</code> tool to gather key performance metrics during each benchmark run, including:
+                                <ul>
+                                    <li>Execution time (seconds)</li>
+                                    <li>CPU cycles</li>
+                                    <li>Instructions executed</li>
+                                    <li>Cycles per Instruction (CPI)</li>
+                                    <li>Cache misses</li>
+                                    <li>Cache references</li>
+                                    <li>Cache-miss rate</li>
+                                </ul>
+                            </li>
+                            <li><strong>Statistical Analysis:</strong> For each metric, the script calculates the average and sample variance across all runs, providing insights into both performance and variability.</li>
+                        </ol>
+                        <p><strong>Compiler Optimization Flags:</strong> The GNU Compiler Collection (GCC) was used with the following flags to maximize performance.</p>
+                        <p><code>CFLAGS = -Wall -O3 -mavx -march=native -funroll-loops -fopenmp</code></p>
+                        <ul>
+                            <li><code>-O3</code>: Enables aggressive optimizations, including loop unrolling and inlining.</li>
+                            <li><code>-mavx</code>: Utilizes AVX instructions for SIMD optimizations.</li>
+                            <li><code>-march=native</code>: Optimizes the compiled code for the specific architecture of the target machine.</li>
+                            <li><code>-funroll-loops</code>: Unrolls loops to reduce branching overhead and improve pipeline performance.</li>
+                            <li><code>-fopenmp</code>: Enables OpenMP support for multithreading, allowing efficient utilization of multiple CPU cores.</li> </ul> </li>
+                        </ul>
+                        <p>For the block size optimization of the competing algorithms, the bash script <code>run_block_size_benchmark.sh</code> was used to collect data. The performance metrics remain identical to those mentioned for the algorithm benchmarks, with the key difference being the addition of block size as an extra parameter during data collection. Results for <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code> were stored in <code>MULTITHREAD_3AVX_block_size_results.csv</code> and <code>MULTITHREAD_9AVX_block_size_results.csv</code>, respectively.</p>
+                        <h3>1.3 Block Size Optimization for Competing Algorithms <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code></h3>
+                        <p>In implementing SIMD vectorization using 256-byte AVX registers, two algorithm versions were developed: <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code>. The first employs the minimum number of registers required to fully utilize SIMD vectorization for matrix multiplication, while the second scales the use of AVX registers by a factor of three to potentially improve performance. Both algorithms use the same underlying technique, the latter has more AVX registers to work with, which may lead to better performance.</p>
+                        <p>To maximize the performance of each algorithm, having the optimal block size is crucial. This ensures that data loaded into the CPU cache is optimally utilized and minimizes time spent refetching discarded data. An optimal block size reduces overhead from memory latency. Initial exploratory runs provided an indication that block sizes of 64 and 128 tended to perform better on average. However, a systematic benchmark is required to rigorously evaluate block size performance and determine whether these sizes are truly optimal.</p>
+                        <p>In this section, we perform a benchmark of predefined block sizes across the matrix dimensions discussed in Section 1.2. The predefined block sizes are given by</p>
+                        \[
+                        I=\{8, 16, 32, 64, 128, 256\}.
+                        \]
+                        <p>Powers of two were selected to simplify the search space, and due to their alignment with with cache lines. For each block size, the average execution time is evaluated using heatmaps to visualize trends across dimensions. This allows us to inspect and identify the two most promising block sizes based on mean execution time.</p>
+                        <p>With the two candidate block sizes identified, \(\beta_{1}\) and \(\beta_{2}\), we perform a two-tailed Welch's t-test to evaluate their performance differences. We have the null and alternative hypotheses defined as</p>
+                        <p>
+                        \[
+                        H_0: \mu_{\delta,\beta_{1}} = \mu_{\delta,\beta_{2}}
+                        \]
+                        \[
+                        H_a: \mu_{\delta,\beta_{1}} \neq \mu_{\delta,\beta_{2}}
+                        \]
+                        </p>
+                        <p>where \(\delta \in I\) represents the dimension, and \(\mu_{\delta,\beta_{j}}\) denotes the average execution time for block size \(\beta_{j}\) at dimension \(\delta\).</p>
+                        <p>Since the test is performed independently for each of the eight dimensions, the initial significance level \(\alpha = 0.05\) must be adjusted to account for the increased risk of Type I errors (false positives) due to multiple comparisons. The cumulative risk arises because performing multiple tests increases the probability of incorrectly rejecting at least one null hypothesis. By applying the Bonferroni correction, the significance level is adjusted to \(\alpha = \frac{0.05}{8} = 0.00625\), reducing the likelihood of Type I errors. However, this conservative approach comes at the cost of an increased risk of Type II errors (false negatives). This happens because the adjusted threshold requires stronger evidence in the data to reject the null hypothesis in favor of the alternative hypothesis.</p>
+                        <p>The systematic approach of applying a two-tailed Welch's t-test ensures a rigorous comparison, allowing us to select the optimal block size for each algorithm. In the subsequent section 1.4, these results will be used to compare <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code> to determine the overall better-performing algorithm.</p>
+                        <h4> 1.3.1 Optimizing Block Size for <code>MULTITHREAD_3AVX</code></h4>
+                        <p>Considering the benchmark data in <code>MULTITHREAD_3AVX_block_size_results.csv</code>, we construct the following heatmap to illustrate how different block sizes affect the execution time for varying matrix dimensions.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/MULTITHREAD_3AVX_block_size_heatmap.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Execution Time Heatmap:</strong> Displays average execution time (seconds) with respect to matrix dimensions and block size for <code>MULTITHREAD_3AVX</code>.</p>
+                        </div>
+                        <p>Inspecting the heatmap, we observe that block sizes 64 and 128 show better performance compared to the other block sizes for dimensions \(\delta = 2000\) and \(\delta = 1500\). Further observations indicate that these two block sizes also perform relatively well across the lower dimensions. Based on this examination, we select block sizes 64 and 128 for further evaluation using Welch's t-test to determine the better-performing block size among the two.</p>
+                        <p>For transparency, it is important to acknowledge that the understanding of "better performance" in this case is a subjective heuristic. Rather than defining a formal metric or objective function, the selection was based on a simple inspection of the mean execution times. The choice reflects an intuitive assessment that block sizes 64 and 128 tend to perform well for the higher dimensions and relatively well for the lower dimensions compared to the other block sizes.</p>
+                        <p>The results of the two-sided Welch's t-test are visualized in the following plot.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/MULTITHREAD_3AVX_block_size_welch.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Rejection Threshold Plot:</strong> This plot visualizes p-values transformed as \(-\log_{10}(\text{P-value})\) for easier interpretation, and hypothesis rejection outcomes for <code>MULTITHREAD_3AVX</code> across different dimensions. Each bar corresponds to a specific dimension and represents its p-value. The red dotted line marks the adjusted alpha significance threshold (after Bonferroni correction). Brown bars indicates the rejection of \(H_{0}\) and that block size 128 has a smaller mean execution time than block size 64. Blue bars indicate failure to reject \(H_{0}\).</p>
+                        </div>
+                        <p>From the plot, we observe a trend where the transformed p-values, given by \(-\log_{10}(\text{P-value})\), increase (implying decreasing untransformed p-values) as the matrix dimension rises, with a rejection of \(H_0\) at \(\delta = 2000\). This rejection strongly supports \(H_a\), indicating that the mean execution times for the two block sizes differ significantly at this dimension. Inspecting the heatmap for \(\delta = 2000\) confirms that block size 128 has a lower mean execution time, supporting the conclusion that it performs better at this dimension. Moreover, the trend of decreasing p-values suggests that as the dimension increases, the performance difference between block sizes 64 and 128 becomes more pronounced. At higher dimensions, block size 128 consistently demonstrates a smaller mean execution time, further highlighting its advantage in these scenarios. However, this interpretation should be approached with caution, as the data shows no significant differences between the two block sizes at lower dimensions. Therefore, at these smaller dimensions, the test results indicate that the data does not provide sufficient evidence to reject \(H_0\), leaving open the possibility that the two block sizes perform similarly under these conditions.</p>
+                        <p>It is important to note that failing to reject \(H_0\) does not imply that \(H_0\) is true. Instead, it reflects insufficient evidence to favor the alternative hypothesis \(H_a\). This could be due to variability in execution times, the sample size, or inherently small differences in performance at smaller dimensions. Additionally, the Bonferroni-adjusted significance threshold of 0.00625 further increases the difficulty of detecting differences, as it requires very strong evidence to reject \(H_0\).</p>
+                        <p>Considering the results across all dimensions, the trend suggests that block size 128 generally outperforms block size 64, particularly for larger matrices where performance differences are more evident. For smaller dimensions, the t-tests do not reveal significant differences, and the data is consistent with both block sizes performing similarly in those cases. Concluding, we therefore select block size 128 as the optimal block size for <code>MULTITHREAD_3AVX</code>.</p>
+                        <h4> 1.3.2 Optimizing Block Size for <code>MULTITHREAD_9AVX</code></h4>
+                        <p>Using a similar procedure as with <code>MULTITHREAD_3AVX</code>, we analyze the data from <code>MULTITHREAD_9AVX_block_size_results.csv</code> and construct a heatmap.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/MULTITHREAD_9AVX_block_size_heatmap.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Execution Time Heatmap:</strong> Displays average execution time (seconds) with respect to matrix dimensions and block size for <code>MULTITHREAD_9AVX</code>.</p>
+                        </div>
+                        <p>As with <code>MULTITHREAD_3AVX</code>, we observe that block size 64 and 128 has the lowest mean for dimensions \(\delta=2000\) and \(\delta=1500\). We further verify that the mean for lower dimensions is relatively good as well. We perform the two-sided Welch's t-test and get the following plot.</p>
+                        <p>As observed with <code>MULTITHREAD_3AVX</code>, block sizes 64 and 128 exhibit the lowest mean execution times for dimensions \(\delta = 2000\) and \(\delta = 1500\). These two block sizes also perform relatively well for lower dimensions. To further evaluate their performance, we utilize a two-sided Welch's t-test, which gives us the following plot.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/MULTITHREAD_9AVX_block_size_welch.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Rejection Threshold Plot:</strong> This plot visualizes p-values transformed as \(-\log_{10}(\text{P-value})\) for easier interpretation, and hypothesis rejection outcomes for <code>MULTITHREAD_9AVX</code> across different dimensions. Each bar corresponds to a specific dimension and represents its p-value. The red dotted line marks the adjusted alpha significance threshold (after Bonferroni correction). Brown bars indicates the rejection of \(H_{0}\) and that block size 128 has a smaller mean execution time than block size 64. Blue bars indicate failure to reject \(H_{0}\).</p>
+                        </div>
+                        <p>Inspecting the plot, the data provide evidence to reject \(H_0\) for \(\delta = 1500\) and \(\delta = 2000\). The heatmap confirms that block size 128 has a lower mean execution time for these dimensions. For the remaining dimensions, \(H_0\) is not rejected, indicating no statistically significant difference between the two block sizes at these levels.</p>
+                        <p>In conclusion, the t-test results indicate a significant performance advantage for block size 128 at the two largest dimensions. Based on these findings, block size 128 is selected as the optimal block size for <code>MULTITHREAD_9AVX</code>.</p>
+                        <h3>1.4 Selection of the Best Algorithm</h3>
+                        <p>When incorporating SIMD vectorization, it was unclear whether utilizing three or nine (256-bit) AVX registers would yield better performance. Intuition suggested that adding more registers would lead to greater computational power, yet experimental data and analysis were needed to draw a conclusive result.</p>
+                        <p>In the previous section, experiments and statistical analysis tests were conducted to determine the optimal block sizes for the algorithms: <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code>. The results showed strong evidence that block size 128 outperformed block size 64 at higher matrix dimensions. For smaller dimensions, no significant difference was observed between the two block sizes. Based on these findings, block size 128 was selected as the optimal parameter for both algorithms.</p>
+                        <p>This section determines the better-performing algorithm between <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code> by analyzing the captured data from <code>benchmarkresults.csv</code> where a block size of 128 was applied. The following heatmap illustrates the average execution time for the algorithms over different dimensions.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/competing_algorithms_execution_time_heatmap.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Execution Time Heatmap:</strong> Displays average execution time (seconds) with respect to matrix dimensions and competing algorithms: <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code>.</p>
+                        </div>
+                        <p>For \(\delta=50\), \(\delta=100\) and \(\delta=200\), we observe that <code>MULTITHREAD_3AVX</code> has a slightly lower mean. For the higher dimensions, <code>MULTITHREAD_9AVX</code> has the lowest mean, with the largest difference occuring at \(\delta=2000\). To determine whether these differences in mean time are statistically significant, we apply Welch's two sided t-test with a Bonferroni correction of the alpha to reduce the risk of type I errors (false positives).</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/competing_algorithms_welch.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Welch's t-test Rejection Bar Plot:</strong> Illustrates p-values and null hypothesis rejections for competing algorithms: <code>MULTITHREAD_3AVX</code>, <code>MULTITHREAD_9AVX</code>. Each bar displays the p-value corresponding to each dimension. The red dotted line represents the adjusted alpha significant threshold (Bonferroni correction). If the null hypothesis is rejected, a brown colored bar indicates the mean execution time for <code>MULTITHREAD_9AVX</code> is smaller.</p>
+                        </div>
+                        <p>As initially observed in the heatmap, for \(\delta = 2000\), the data shows strong evidence that 
+                        <code>MULTITHREAD_9AVX</code> achieves a better runtime. For \(\delta = 1500\), the p-value is close to statistical significance, also favoring <code>MULTITHREAD_9AVX</code>. However, for \(\delta = 100\), the test nearly rejects the null hypothesis in favor of <code>MULTITHREAD_3AVX</code>.</p>
+                        <p>Further data collection and testing might clarify whether the smaller mean for <code>MULTITHREAD_3AVX</code> observed in the heatmap is due to the algorithm being better suited for smaller dimensions, or whether it is simply a result of noise, variance, or randomness in the hardware across runs. Further testing 
+                        with higher dimensions would also be interesting, as it would help determine whether the performance gap observed in <code>MULTITHREAD_9AVX</code> for \(\delta = 2000\) continues to improve as the matrix size increases.</p>
+                        <p>Nevertheless, Welch’s t-test reveals strong evidence of a difference for \(\delta = 2000\). Therefore, we accept <code>MULTITHREAD_9AVX</code> as the overall better-performing algorithm.</p>
+                        <h3>1.5 Benchmarking Algorithms</h3>
+                        <p>This section contains figures of the benchmark data found in <code>benchmarkresults.csv</code> for all the implemented algorithms and OpenBLAS. The purpose of the section is to highlight the iterative improvement between the implemented algorithms. </p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/execution_time_plot.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Execution Time Plot:</strong> Displays average execution time (seconds) of the implemented algorithms and OpenBLAS with respect to matrix dimensions.</p>
+                        </div>
+                        <p>Notice how the implemented algorithms <code>NAIVE</code> and <code>SINGLETHREAD</code> have a smaller mean execution time in the lower dimensions compared to the multithreaded algorithms. This difference is likely due to the overhead introduced by multithreading—such as thread initialization, mutex and queue interactions, and thread clean-up. Nevertheless, as the dimension increases, this overhead becomes negligible.</p>
+                        <p>Further speculation suggests that OpenBLAS may utilize a single-threaded framework for the smallest dimensions, as its mean execution time closely matches that of <code>NAIVE</code> and <code>SINGLETHREAD</code>.</p>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/execution_time_heatmap.png" alt="Line plot showing average execution time (seconds) for all algorithms" loading="lazy">
+                            <p><strong>Execution Time Heatmap:</strong> Displays average execution time (seconds) of the implemented algorithms and OpenBLAS with respect to matrix dimensions.</p>
+                        </div>
+                        <div class="article-img-container">
+                            <img class="article-img" src="../assets/img/matrixmul-CPU/cpi_bar.png" alt="Bar chart showing cycles per instruction (CPI) for all algorithms" loading="lazy">
+                            <p><strong>CPI Bar Chart:</strong> Displays cycles per instruction (CPI) of the implemented algorithms and OpenBLAS with respect to matrix dimensions.</p>
+                        </div>
+                        <h2>1.7 Conclusion</h2>
+                        <p>This project has served as a valuable milestone in learning low-level programming in C, demonstrating the iterative process of optimizing matrix multiplication algorithms, starting with the simple naive implementation. By implementing the blocking method, incorporating multithreading, and utilizing SIMD vectorization, a steady improvement in performance has been observed.</p>
+                        <p>In addition, thorough benchmarking and statistical testing provided strong evidence that <code>MULTITHREAD_9AVX</code> outperforms <code>MULTITHREAD_3AVX</code> at higher matrix dimensions. As no statistically significant difference was found at lower dimensions, <code>MULTITHREAD_9AVX</code> is accepted as the best-performing algorithm overall</p>
+                        <h2>2. Appendix: Theory</h2>
+                        <p>This section provides detailed explanations of the algorithms developed throughout this project.</p>
+                        <h3>2.1 Naive Matrix Multiplication Algorithm - <code>NAIVE</code></h3>
+                        <p>Our starting point is the naive matrix multiplication algorithm, which we will refer to as <code>NAIVE</code>. This implementation serves as the baseline from which we can improve to create better-performing algorithms.</p>
+                        <p>For <code>NAIVE</code>, we use a triple-nested loop to perform matrix multiplication. For matrices \(A\) of size \(n \times m\) and \(B\) of size \(m \times p\), the resulting matrix \(C\) of size \(n \times p\) is computed by iterating over each element \(c_{ij}\) in \(C\). Iterating over \(c_{ij}\) is handled by the two outer loops seen in the pseudocode below. In the inner-most loop, we calculate each \(c_{ij}\). This is done by calculating the dot product of the \(i\)-th row of \(A\) and the \(j\)-th column of \(B\).</p>
+                        <pre><code class="language-c">
+void matrix_mult_naive(Matrix* A, Matrix* B, Matrix* C) {
+
+    /*
+    * Logic for ensuring valid Matrix pointers and that
+    * they are compatible for multiplication.
+    */
+    // ...
+
+    // Retrieve internal Matrix arrays
+    double* A_arr = A->values;
+    double* B_arr = B->values;
+    double* C_arr = C->values;
+
+    // Extract Matrix dimensions
+    size_t n = A->num_rows;
+    size_t m = A->num_cols;
+    size_t p = B->num_cols;
+
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < p; j++) {
+
+            // Calculate the dot product for this cell in Matrix C
+            for (size_t k = 0; k < m; k++) {
+                C_arr[i * p + j] += A_arr[i * m + k] * B_arr[k * p + j];
+            }
+        }
+    }
+}
+                        </code></pre><p></p>
+                        <h4>2.1.1 Matrix Struct and One-Dimensional Arrays</h4>
+                        <p>To represent a matrix, we use the custom <code>Matrix</code> struct, which internally utilizes a one-dimensional array to represent a two-dimensional matrix. The struct contains member variables for the number of rows and columns, along with a member variable for the internal one-dimensional array. The number of rows and columns are needed to correctly index the one-dimensional array.</p>
+                        <p>The benefits of a one-dimensional array are that all elements are stored contiguously in memory, which improves spatial locality. When a byte is accessed from memory by the CPU, the CPU fetches the whole corresponding cache line, not just the byte. This mechanism is in place because programs tend to work with adjacent bytes, like with an array for example. Thus, retrieving the entire cache line reduces multiple independent retrievals. This results in fewer cache misses and more efficient data retrieval.</p>
+                        <p>To highlight further, a two-dimensional array (or an array of pointers) does not guarantee that rows are stored adjacently in memory like with a one-dimensional array. Each row could be allocated separately by the memory allocator, which may cause logically adjacent rows to be physically distant in memory. This worsens spatial locality, as potentially more cache lines need to be fetched by the CPU, increasing the likelihood of cache misses and inefficient use of the CPU caches.</p>
+                        <h4>2.1.2 Considerations</h4>
+                        <p>While the <code>NAIVE</code> algorithm is simple and easy to understand, it has several drawbacks, especially when dealing with large matrices.</p> 
+                        <ul>
+                          <li><strong>Inefficient Cache Usage With Large Matrix Sizes:</strong> To compute element \(c_{ij}\) from \(C\) in the inner-most loop, the algorithm accesses the entire \(i\)-th row of \(A\) and the entire \(j\)-th column of \(B\). For large matrices, these rows and columns may not fit within the CPU caches. As a result, the cache can become filled with data that might not be reused before being discarded, leading to cache misses. This causes the CPU to fetch data from memory more frequently, which slows down the computation since accessing memory is significantly slower than accessing data from the cache.</li>
+                          </li>
+                          <li><strong>Poor Spatial Locality When Accessing Columns of \(B\):</strong> <code>NAIVE</code> accesses the elements of \(B\) column-wise (i.e., \(B_{kj}\)), but since \(B\) is stored in row-major order in a one-dimensional array, its columns are not stored contiguously in memory. In the inner-most loop, we calculate each element \(c_{ij}\) by summing over the elements of row \(i\) in \(A\) multiplied with the elements of column \(j\) in \(B\) pairwise. When accessing <code>A_arr</code>, we efficiently retrieve adjacent elements due to the contiguous memory layout of \(A\). However, when accessing <code>B_arr</code>, we perform jumps in memory because \(B\)'s columns are not stored contiguously. This worsens spatial locality and may increase cache misses since each access to a new element in the column may require loading a new cache line. Thus, if the matrix is large, we may end up discarding already fetched cache lines, and thus not making the best use of data that we retrieve from memory. By transposing matrix \(B\), we convert the column-wise access into row-wise access, making the memory accesses contiguous and improving spatial locality.</li>
+                        </ul>
+                        <h3>2.2 Blocking / Tiling Method - <code>SINGLETHREAD</code></h3>
+                        <p>The algorithm extending <code>NAIVE</code> by incorporating the blocking method and pre-transposing matrix \(B\) is referred to as <code>SINGLETHREAD</code>. The blocking method improves cache utilization by dividing the matrices into smaller submatrices (blocks) that fit into the CPU cache and be processed independently. For each block in \(C\), the corresponding rows of matrix \(A\) and columns of matrix \(B\) are partitioned into smaller blocks, which are then loaded into the CPU cache for efficient computation.</p>
+                        <p>Transposing matrix \(B\), as mention in the previous section turns column-wise access into row-wise access, thus accessing contiguous data in memory.</p>
+                        <p>The following is pseudocode for <code>SINGLETHREAD</code>. In the original code, loop unrolling is applied to further optimize performance along with variables containing precomputed values. This is not present in the pseudocode to maintain simplicity.</p>
+                        <pre><code class="language-c">
+void matrix_singlethread_mult(Matrix* A, Matrix* B, Matrix* C, size_t block_size) {
+
+    /*
+    * Logic for ensuring valid Matrix pointers and that
+    * they are compatible for multiplication.
+    * Verify block_size is greater than 0.
+    * Adjust block_size if it is larger than the smallest dimension
+    * of all matrices to the smallest dimension.
+    */
+    // ...
+
+    /*
+    * Transpose the internal array of Matrix B to increase
+    * spatial locality.
+    */
+    // B_trans_arr = ...;
+
+    // Retrieve internal Matrix arrays
+    double* A_arr = A->values;
+    double* C_arr = C->values;
+
+    // Extract Matrix dimensions
+    size_t n = A->num_rows;
+    size_t m = A->num_cols;
+    size_t p = B->num_cols;
+
+    // Iterate over blocks within the C matrix
+    for (size_t i = 0; i < n; i += block_size) {
+        for (size_t j = 0; j < p; j += block_size) {
+
+            /*
+            * Iterate over blocks in the shared dimension
+            * (rows of A and columns of B) corresponding to
+            * the current block in C.
+            */
+            for (size_t k = 0; k < m; k += block_size) {
+
+                /*
+                * We calculate i_max, j_max, and k_max to handle cases
+                * where the block size does not divide the matrix
+                * dimensions evenly. This ensures we don't access
+                * out-of-bounds memory when processing the edge blocks.
+                */
+                size_t i_max = min(i + block_size, n);
+                size_t j_max = min(j + block_size, p);
+                size_t k_max = min(k + block_size, m);
+
+                // Iterate over elements within the current block of C
+                for (size_t ii = i; ii < i_max; ii++) {
+                    for (size_t jj = j; jj < j_max; jj++) {
+
+                        /*
+                        * Update c_{ij} within the C block. Note that it is not
+                        * fully calculated as this happens after we have gone
+                        * through every block in the shared dimension k.
+                        */
+                        for (size_t kk = k; kk < k_max; kk++) {
+                            C_arr[ii * p + jj] += A_arr[ii * m + kk] * B_trans_arr[jj * m + kk];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Free the helper B transpose array
+    free(B_trans_arr);
+}
+                        </code></pre>
+                        <p>By applying the <code>SINGLETHREAD</code> method, we address the inefficiencies of the <code>NAIVE</code> implementation related to cache usage and memory access patterns. The result is improved performance, especially for large matrices.</p>
+                        <h4>2.2.1 Considerations</h4>
+                        <p>With the blocking method, a block size parameter is introduced to determinine the size of the blocks. Finding an optimal parameter value is crucial for maximizing the algorithm's efficiency.</p>
+                        <p>When the block size is set lower than optimal, several issues can arise. Smaller block sizes result in more blocks, which increases loop iterations and adds function overhead. Additionally, smaller blocks can lead to poorer cache utilization, particularly for matrix \(B\), as discussed in the <code>NAIVE</code> section. While the blocking method aims to optimize cache usage, smaller block sizes may underutilize cache lines.</p>
+                        <p>In the <code>NAIVE</code> approach, retrieving a cache line often meant using only a single double before "jumping" to the next row of matrix \(B\). The blocking method improves this by allowing multiple contiguous doubles from the same cache line to be used before moving to the next row, thus better leveraging the CPU cache.</p>
+                        <h3>2.3 Multithreading - <code>MULTITHREAD</code></h3>
+                        <p>The next improvement is the introduction of <code>MULTITHREAD</code>, an algorithm that builds upon <code>SINGLETHREAD</code> by utilizing multithreading to leverage multiple CPU cores in parallel. Multithreading integrates well with <code>SINGLETHREAD</code> and its blocking method, as each block of the result matrix \(C\) can be computed independently, without interfering with other blocks. The main change in <code>MULTITHREAD</code> is the refactoring of <code>SINGLETHREAD</code> to distribute tasks across multiple threads. To achieve this, two key components are introduced: the <code>Task</code> and the <code>Queue</code> struct.</p>
+                        <p>The <code>Task</code> struct is a simple abstraction that encapsulates a unit of work for a thread. Each task contains member variables that define the specific block of \(C\) to be computed, including relevant indices and pointers to the matrices involved. By encapsulating the data required for each block calculation, we can distribute tasks among threads efficiently.</p>
+                        <p>The <code>Queue</code> struct stores all tasks to be executed and ensures threads can retrieve tasks efficiently during runtime. To synchronize access to the shared queue, a mutex (mutual exclusion lock) is used. A mutex ensures that only one thread can access the queue at a time, preventing race conditions that could lead to incorrect computations or corrupted data.</p>
+                        <p>The following two codeboxes provide pseudocode for <code>matrix_multithread_mult</code> and <code>process_tasks</code>. To maintain clarity, certain implementation details have been simplified in the pseudocode.</p>
+                        <p>The first codebox, <code>matrix_multithread_mult</code>, represents the main function managing the multithreading. It handles the construction of tasks and the queue, initializing threads, assigning each thread the <code>process_tasks</code> function, and performing cleanup.</p>
+                        <pre><code class="language-c">
+void matrix_multithread_mult(Matrix* A, Matrix* B, Matrix* C, size_t block_size, size_t NUM_THREADS) {
+
+    /*
+    * Validate Matrix pointers and ensure they are compatible for multiplication.
+    * Verify block_size is greater than 0.
+    */
+    // ...
+
+    // Extract Matrix dimensions
+    size_t n = A->num_rows;
+    size_t m = A->num_cols;
+    size_t p = B->num_cols;
+
+    // Create a Queue of tasks for computing blocks of Matrix C
+    Queue* q = preprocessing(A, B, C, block_size);
+
+    // Initialize the mutex for the threads to safely interact with the Queue
+    pthread_mutex_init(&queue_lock, NULL);
+
+    // Create an array of threads
+    pthread_t threads[NUM_THREADS];
+
+    // Assign threads the process_tasks function
+    for (size_t i = 0; i < NUM_THREADS; i++) {
+        pthread_create(&threads[i], NULL, process_tasks, q);
+    }
+
+    // Wait for all threads to complete
+    for (size_t i = 0; i < NUM_THREADS; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+    // Clean up resources
+    queue_free(q);
+    pthread_mutex_destroy(&queue_lock);
+}
+                        </code></pre>
+                        <p>The second codebox, <code>process_tasks</code>, contains code executed by the threads. The code handles safe interaction with the queue. If its non-empty, the thread retrieves a task and uses <code>thread_mult</code> to perform the matrix multiplication for the specified block in \(C\). The matrix multiplication logic in <code>thread_mult</code> remains mostly unchanged from the previous implementation and is therefore not included here. The key difference is the removal of the two outer loops that dissect matrix \(C\) into blocks (see the pseudocode in section Blocking / Tiling Method - SINGLETHREAD). This is because information about the block is now stored in the <code>Task</code> struct.</p>
+                        <pre><code class="language-c">
+void* process_tasks(void* arg) {
+
+    Queue* q = (Queue*) arg;
+
+    while (true) {
+        Task t;
+        bool is_empty;
+
+        // Lock the mutex before accessing the Queue
+        pthread_mutex_lock(&queue_lock);
+
+        /*
+        * The thread interacts with the Queue. To minimize
+        * time spent occupying the mutex, the thread simply
+        * retrieves a Task if the Queue is non-empty.
+        * All other processing happens after unlocking the mutex,
+        * allowing other threads to interact with the Queue.
+        */
+        is_empty = queue_is_empty(q);
+        if (!is_empty) {
+            t = queue_get(q);
+        }
+
+        // Unlock the mutex
+        pthread_mutex_unlock(&queue_lock);
+
+        // If the Queue is empty, exit the loop
+        if (is_empty) {
+            break;
+        }
+
+        // Perform matrix multiplication for the current Task
+        thread_mult(t);
+    }
+
+    return NULL;
+}
+                        </code></pre><p></p>
+                        <h4>2.3.1 Considerations</h4>
+                        <p>When using multithreading, it is important to balance the introduced overhead from thread creation and management with the performance benefits. For small matrices, this overhead can outweigh the advantages of parallel computation, making multithreading less effective.</p>
+                        <p>Additionally, selecting an optimal block size parameter is crucial. A block size that creates very small submatrices increases the number of tasks, which in turn increases the ratio of overhead to actual computation, as more time is spent setting up tasks and managing threads relative to performing matrix multiplications.</p>
+                        <h3>2.4 SIMD Vectorization - <code>MULTITHREAD_3AVX</code>, <code>MULTITHREAD_9AVX</code></h3>
+                        <p>As a final optimization step, we introduce AVX vectorization to perform calculations in parallel within the CPU. In standard operations, a CPU register typically holds a single value, such as a double, and operates on it individually. An AVX register, however, can hold multiple values simultaneously (depending on their size) and perform operations on all of them in parallel. This can greatly enhance the performance of compute-intensive tasks like matrix multiplication.</p>
+                        <p>To perform the matrix multiplications using AVX registers (256 bytes), a total of three registers are used. This is reflected in the names of this section's algorithms: <code>MULTITHREAD_3AVX</code> and <code>MULTITHREAD_9AVX</code>. The former algorithm uses three AVX registers, the smallest number of registers needed to perform the matrix multiplication. The latter algorithm uses nine AVX registers. Internally, this algorithm represents the scaling of the matrix code by a factor of three.</p>
+                        <pre><code class="language-c">
+void thread_mult_3avx(Task t) {
+
+    // Retrieve matrices: A x B = C
+    Matrix* A = t.A;
+    Matrix* B_trans = t.B_trans;
+    Matrix* C = t.C;
+
+    // Extract Matrix dimensions
+    size_t m = A->num_cols;
+    size_t p = B_trans->num_rows;
+
+    // Retrieve internal Matrix arrays
+    double* A_arr = A->values;
+    double* B_trans_arr = B_trans->values;
+    double* C_arr = C->values;
+
+    // The block size to use (blocking method)
+    size_t block_size = t.block_size;
+
+    // Variables to describe the C block (start inclusive, end exclusive)
+    size_t C_row_start = t.C_row_start;
+    size_t C_col_start = t.C_col_start;
+    size_t C_row_end = t.C_row_end;
+    size_t C_col_end = t.C_col_end;
+
+    // Loop goes through blocks in the shared dimension
+    for (size_t k = 0; k < m; k += block_size) {
+        // Makes sure we stay within the block and shared matrix dimension
+        size_t k_min = min(k + block_size, m);
+
+        // The two following loops goes through all elements c_{ij} in the block
+        for (size_t ii = C_row_start; ii < C_row_end; ii++) {
+            // Precomputed variable
+            size_t a_row_offset = ii * m;
+            for (size_t jj = C_col_start; jj < C_col_end; jj++) {
+
+                // Precomputed variables
+                size_t kk = k;
+                size_t c_index = ii * p + jj;
+                size_t b_row_offset = jj * m;
+                double c_value = C_arr[c_index];
+
+                /*
+                 * Using AVX (256 bytes) registers to speed up the process (SIMD).
+                 * The implementation below follows these steps:
+                 * 1. Initialize the first AVX register to 0 (c_vec).
+                 * 2. Load 4 doubles from A into the second AVX register.
+                 * 3. Load 4 doubles from B into the third AVX register.
+                 * 4. Perform the multiplication and add the value to c_vec.
+                 * 5. Unwrap the c_vec value using an array.
+                 * 6. Add the elements of c_vec into a single value.
+                 */
+
+                // Initialize AVX register to zero. These will act as a holder
+                // containing the accumulation of the dot product for a single
+                // (ii,jj) cell in C when going over the block corresponding
+                // to k.
+                __m256d c_vec = _mm256_setzero_pd();
+                for (; kk + 3 < k_min; kk += 4) {
+
+                    // Load the 4 doubles from A starting from the address given
+                    // as function argument.
+                    __m256d a_vals = _mm256_loadu_pd(&A_arr[a_row_offset + kk]);
+
+                    // Load the 4 doubles from B starting from the address given
+                    // as function argument.
+                    __m256d b_vals = _mm256_loadu_pd(&B_trans_arr[b_row_offset + kk]);
+
+                    // Multiply the dot product between the A and B values
+                    // in the AVX registers and add the value to the
+                    // c_vec.
+                    c_vec = _mm256_fmadd_pd(a_vals, b_vals, c_vec);
+                }
+
+                // Unwrap the c_vec and sum up the elements in the vector
+                double temp[4];
+                _mm256_store_pd(temp, c_vec);
+                c_value += temp[0] + temp[1] + temp[2] + temp[3];
+
+                // Handle residual operations not handled by the SIMD loop
+                for (; kk < k_min; kk++) {
+                    c_value += A_arr[a_row_offset + kk] * B_trans_arr[b_row_offset + kk];
+                }
+
+                // Write back to memory
+                C_arr[c_index] = c_value;
+            }
+        }
+    }
+}
+                        </code></pre>
                     </div>
                 </div>
             </div>
