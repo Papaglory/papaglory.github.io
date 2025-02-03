@@ -9,63 +9,74 @@
 
 <url>
   <loc>https://mariusnaasen.com/</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/assets/files/cv.pdf</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/pid-rocket-simulator</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/heat-wave-equation-simulator</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/3d-box-rendering</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
-  <priority>0.80</priority>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/heat-equation-2d</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/ai-warship</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/thesis</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
-  <priority>0.80</priority>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/dream-control</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://mariusnaasen.com/projects/battleship</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
+  <loc>https://mariusnaasen.com/projects/memory-allocator-in-c</loc>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mariusnaasen.com/projects/matrixmul-cpu</loc>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://mariusnaasen.com/assets/files/thesis.pdf</loc>
-  <lastmod>2024-06-24T07:48:41+00:00</lastmod>
+  <lastmod>2025-02-03T17:47:53+00:00</lastmod>
   <priority>0.64</priority>
 </url>
+
 
 </urlset>
