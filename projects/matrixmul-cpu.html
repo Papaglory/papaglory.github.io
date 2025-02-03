@@ -105,11 +105,11 @@
                         <ul>
                             <li><code>VALUES_MIN</code> <code>-1e+6</code>: Chosen to ensure values are within a safe range, minimizing the likelihood of floating-point round-off errors during computations.</li>
                             <li><code>VALUES_MAX</code> <code>1e+6</code>: The upper bound for element values in the matrices, complementing <code>VALUES_MIN</code> to establish a safe range.</li>
-                            <li><code>DIMENSION_SIZE</code> <code>3000 x 3000</code>: A size to balance being computationally feasible for the system and large enough to evaluate the performance of the algorithms on sizable matrices.
+                            <li><code>DIMENSION_SIZE</code> <code>2000 x 2000</code>: A size to balance being computationally feasible for the system and large enough to evaluate the performance of the algorithms on sizable matrices.
                             </li>
                             <li><code>APPROXIMATION_THRESHOLD</code> <code>1e-9</code>: Ensures that the floating-point accuracy of the created algorithms remains comparable to that of OpenBLAS.</li>
                         </ul>
-                        <p>A matrix dimension of <code>3000 x 3000</code> was used to have an upper bound for the algorithms during benchmarking It is assumed that smaller square matrices of this size will have comparable floating-point accuracy, as they involve fewer multiplications, reducing the likelihood of floating-point precision loss and round-off errors.</p>
+                        <p>A matrix dimension of <code>2000 x 2000</code> was used to have an upper bound for the algorithms during benchmarking It is assumed that smaller square matrices of this size will have comparable floating-point accuracy, as they involve fewer multiplications, reducing the likelihood of floating-point precision loss and round-off errors.</p>
                         <p>For more about verification and correctness, please refer to the source files.</p>
                         <ul>
                             <li><code>matrix_mult_naive_verification.c</code></li>
